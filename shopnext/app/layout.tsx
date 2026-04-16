@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -14,8 +15,7 @@ export const metadata: Metadata = {
   keywords: ["thời trang", "mua sắm online", "áo quần", "shopnext"],
   openGraph: {
     title: "ShopNext – Thời Trang Phong Cách",
-    description:
-      "Cửa hàng thời trang online chất lượng cao",
+    description: "Cửa hàng thời trang online chất lượng cao",
     type: "website",
     locale: "vi_VN",
   },
@@ -29,11 +29,13 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
-        <CartProvider>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

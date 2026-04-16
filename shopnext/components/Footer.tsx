@@ -111,7 +111,7 @@ export default function Footer() {
                 { href: "/products", label: "Xem Tất Cả" },
               ].map((link) => (
                 <Link key={link.href} href={link.href} className="footer-link">
-                  → {link.label}
+                  {link.label}
                 </Link>
               ))}
             </nav>
@@ -140,7 +140,7 @@ export default function Footer() {
                 { href: "#", label: "Liên Hệ" },
               ].map((link) => (
                 <Link key={link.label} href={link.href} className="footer-link">
-                  → {link.label}
+                  {link.label}
                 </Link>
               ))}
             </nav>

@@ -28,6 +28,13 @@ export default function ProductDetailClient({
     ? calculateDiscount(product.originalPrice, product.price)
     : null;
 
+  const categoryLabel: Record<string, string> = {
+    ao: "Áo",
+    quan: "Quần",
+    vay: "Váy & Đầm",
+    "phu-kien": "Phụ Kiện",
+  };
+
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       addItem(product, selectedSize, selectedColor);
@@ -111,18 +118,22 @@ export default function ProductDetailClient({
 
         {/* Info */}
         <div>
-          <p
+          <span
             style={{
-              color: "var(--color-primary)",
-              fontWeight: 600,
-              fontSize: "0.8rem",
+              display: "inline-block",
+              background: "#fef3c7",
+              color: "#92400e",
+              fontSize: "0.75rem",
+              fontWeight: 500,
               textTransform: "uppercase",
-              letterSpacing: "0.1em",
+              letterSpacing: "0.08em",
+              padding: "0.125rem 0.625rem",
+              borderRadius: "6px",
               marginBottom: "0.5rem",
             }}
           >
-            {product.category.replace("-", " ")}
-          </p>
+            {categoryLabel[product.category] ?? product.category}
+          </span>
           <h1
             style={{
               fontSize: "clamp(1.4rem, 3vw, 2rem)",

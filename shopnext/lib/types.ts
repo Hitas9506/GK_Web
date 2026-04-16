@@ -29,3 +29,16 @@ export interface Category {
   icon: string;
   count: number;
 }
+
+export type OrderStatus = "pending" | "confirmed" | "shipping" | "delivered" | "cancelled";
+
+export interface Order {
+  id: string;
+  date: string;
+  items: CartItem[];
+  subtotal: number;
+  shipping: number;
+  total: number;
+  paymentMethod: string;
+  status: OrderStatus;
+}

@@ -3,11 +3,14 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const { totalItems } = useCart();
+  const { user, logout } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -21,6 +24,7 @@ export default function Navbar() {
     { href: "/products?category=ao", label: "Áo" },
     { href: "/products?category=quan", label: "Quần" },
     { href: "/products?category=vay", label: "Váy & Đầm" },
+    { href: "/orders", label: "Đơn Hàng" },
     { href: "/about", label: "Giới Thiệu" },
   ];
 
@@ -132,19 +136,7 @@ export default function Navbar() {
           {/* Search */}
           <Link
             href="/search"
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textDecoration: "none",
-              color: "var(--color-text)",
-              background: "var(--color-muted)",
-              transition: "all 0.2s ease",
-              fontSize: "1.1rem",
-            }}
+            style={{ width: "40px", height: "40px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", color: "var(--color-text)", background: "var(--color-muted)", transition: "all 0.2s ease", fontSize: "1.1rem" }}
             title="Tìm kiếm"
           >
             🔍
@@ -194,21 +186,48 @@ export default function Navbar() {
             )}
           </Link>
 
+          {/* User / Login */}
+          {user ? (
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                style={{ width: "40px", height: "40px", borderRadius: "50%", border: "2px solid var(--color-primary)", background: "rgba(200,169,110,0.12)", cursor: "pointer", fontSize: "1.2rem", display: "flex", alignItems: "center", justifyContent: "center" }}
+                title={user.name}
+              >
+                {user.avatar}
+              </button>
+              {userMenuOpen && (
+                <div style={{ position: "absolute", right: 0, top: "48px", background: "white", border: "1px solid var(--color-border)", borderRadius: "14px", boxShadow: "0 12px 36px rgba(0,0,0,0.12)", minWidth: "200px", zIndex: 100, overflow: "hidden" }}>
+                  <div style={{ padding: "0.9rem 1rem", borderBottom: "1px solid var(--color-border)" }}>
+                    <p style={{ fontWeight: 700, fontSize: "0.88rem", margin: 0, color: "var(--color-text)" }}>{user.name}</p>
+                    <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", margin: "0.15rem 0 0" }}>{user.email}</p>
+                  </div>
+                  <Link href="/profile" onClick={() => setUserMenuOpen(false)} style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", color: "var(--color-text)", fontSize: "0.88rem", fontWeight: 500, transition: "background 0.15s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-muted)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  >👤 Thông tin cá nhân</Link>
+                  <Link href="/orders" onClick={() => setUserMenuOpen(false)} style={{ display: "block", padding: "0.75rem 1rem", textDecoration: "none", color: "var(--color-text)", fontSize: "0.88rem", fontWeight: 500, transition: "background 0.15s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-muted)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  >📦 Đơn hàng của tôi</Link>
+                  <button onClick={() => { logout(); setUserMenuOpen(false); }} style={{ width: "100%", padding: "0.75rem 1rem", border: "none", background: "transparent", cursor: "pointer", textAlign: "left", color: "#ff4757", fontSize: "0.88rem", fontWeight: 600, borderTop: "1px solid var(--color-border)" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#fff5f5")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                  >🚪 Đăng xuất</button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link href="/login" style={{ padding: "0.45rem 1rem", borderRadius: "8px", border: "2px solid var(--color-primary)", color: "var(--color-primary)", fontSize: "0.82rem", fontWeight: 700, textDecoration: "none", transition: "all 0.2s ease", whiteSpace: "nowrap" }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = "var(--color-primary)"; e.currentTarget.style.color = "white"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--color-primary)"; }}
+            >Đăng nhập</Link>
+          )}
+
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            style={{
-              width: "40px",
-              height: "40px",
-              borderRadius: "8px",
-              border: "none",
-              background: "var(--color-muted)",
-              cursor: "pointer",
-              fontSize: "1.2rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
+            style={{ width: "40px", height: "40px", borderRadius: "8px", border: "none", background: "var(--color-muted)", cursor: "pointer", fontSize: "1.2rem", display: "flex", alignItems: "center", justifyContent: "center" }}
             className="show-mobile"
             aria-label="Toggle menu"
           >

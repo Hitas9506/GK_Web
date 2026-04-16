@@ -15,7 +15,14 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const categoryLabel: Record<string, string> = {
+    ao: "Áo",
+    quan: "Quần",
+    vay: "Váy & Đầm",
+    "phu-kien": "Phụ Kiện",
+  };
+
+  const handleAddToCart = (e: React.MouseEvent | React.PointerEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addItem(product, product.sizes[0], product.colors[0]);
@@ -102,7 +109,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           {/* Quick add button */}
           <button
-            onClick={handleAddToCart}
+            onPointerDown={handleAddToCart}
             style={{
               position: "absolute",
               bottom: "12px",
@@ -141,7 +148,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               marginBottom: "0.25rem",
             }}
           >
-            {product.category.replace("-", " ")}
+            {categoryLabel[product.category] ?? product.category}
           </p>
           <h3
             className="line-clamp-2"

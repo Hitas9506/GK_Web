@@ -8,10 +8,9 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   const team = [
-    { name: "Nguyễn Văn An", role: "CEO & Founder", emoji: "👨‍💼" },
-    { name: "Trần Thị Bảo", role: "Head of Design", emoji: "👩‍🎨" },
-    { name: "Phạm Quốc Cường", role: "Tech Lead", emoji: "👨‍💻" },
-    { name: "Lê Hồng Dương", role: "Marketing Director", emoji: "👩‍💼" },
+    { name: "Hoàng Thái Đăng Khoa", emoji: "👨‍💻" },
+    { name: "Tạ Đình Quốc Thái", emoji: "👨‍💻" },
+    { name: "Nguyễn Huy Hoàng", emoji: "👨‍💻" },
   ];
 
   const milestones = [
@@ -310,15 +309,6 @@ export default function AboutPage() {
                 >
                   {member.name}
                 </h3>
-                <p
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "var(--color-primary)",
-                    fontWeight: 600,
-                  }}
-                >
-                  {member.role}
-                </p>
               </div>
             ))}
           </div>
