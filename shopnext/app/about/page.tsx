@@ -76,7 +76,7 @@ export default function AboutPage() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              Thời Trang Là Ngôn Ngữ
+              Chất Lượng Là Tất Cả
             </span>
           </h1>
           <p
@@ -86,8 +86,9 @@ export default function AboutPage() {
               lineHeight: 1.8,
             }}
           >
-            ShopNext ra đời từ tình yêu với thời trang và khát vọng mang đến những
-            sản phẩm chất lượng nhất với giá thành hợp lý nhất cho người Việt.
+            “Quality is remembered long after price is forgotten.”<br />
+            Chất lượng được ghi nhớ mãi mãi, dù giá cả đã bị lãng quên –
+            đó là triết lý mà ShopNext đặt lên hàng đầu trong từng sản phẩm.
           </p>
         </div>
       </section>
@@ -363,7 +364,7 @@ export default function AboutPage() {
               flexWrap: "wrap",
             }}
           >
-            {["Next.js 16", "App Router", "TypeScript", "Tailwind CSS", "Vercel"].map(
+            {["Next.js 16", "App Router", "TypeScript", "Vanilla CSS", "Vercel"].map(
               (tech) => (
                 <span
                   key={tech}

@@ -14,6 +14,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const categoryLabel: Record<string, string> = {
     ao: "Áo",
@@ -55,24 +56,24 @@ export default function ProductCard({ product }: ProductCardProps) {
             overflow: "hidden",
           }}
         >
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            style={{ objectFit: "cover" }}
-            onError={(e) => {
-              // Fallback gradient if image not found
-              const t = e.currentTarget as HTMLImageElement;
-              t.style.display = "none";
-              const parent = t.parentElement;
-              if (parent) {
-                parent.style.background =
-                  "linear-gradient(135deg, #f7f4f0, #e8e0d5)";
-                parent.innerHTML += `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:4rem">👗</div>`;
-              }
-            }}
-          />
+          {/* Bug 8 fix: use React state for image fallback instead of innerHTML */}
+          {imgError ? (
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(135deg, #f7f4f0, #e8e0d5)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "4rem",
+            }}>👗</div>
+          ) : (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              style={{ objectFit: "cover" }}
+              onError={() => setImgError(true)}
+            />
+          )}
 
           {/* Badge */}
           {product.badge && (

@@ -7,15 +7,15 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "ShopNext – Thời Trang Phong Cách",
+    default: "ShopNext – Chất Lượng Được Ghi Nhớ Mãi",
     template: "%s | ShopNext",
   },
   description:
-    "ShopNext – Cửa hàng thời trang online với hàng ngàn sản phẩm áo, quần, váy và phụ kiện chất lượng cao. Mua sắm dễ dàng, giao hàng nhanh chóng.",
-  keywords: ["thời trang", "mua sắm online", "áo quần", "shopnext"],
+    "Chất lượng được ghi nhớ mãi, sau khi giá cả đã bị lãng quên. ShopNext – cửa hàng thời trang chất lượng cao với hàng ngàn sản phẩm áo, quần, váy và phụ kiện. Giao hàng toàn quốc.",
+  keywords: ["thời trang", "chất lượng", "mua sắm online", "áo quần", "shopnext"],
   openGraph: {
-    title: "ShopNext – Thời Trang Phong Cách",
-    description: "Cửa hàng thời trang online chất lượng cao",
+    title: "ShopNext – Chất Lượng Được Ghi Nhớ Mãi",
+    description: "Chất lượng được ghi nhớ mãi, sau khi giá cả đã bị lãng quên.",
     type: "website",
     locale: "vi_VN",
   },

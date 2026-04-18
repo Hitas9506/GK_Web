@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 
@@ -11,6 +11,22 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Hydration fix: only show client-side data (cart count) after mount
+  useEffect(() => setMounted(true), []);
+
+  // Bug 7 fix: close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -162,7 +178,7 @@ export default function Navbar() {
             title="Giỏ hàng"
           >
             🛒
-            {totalItems > 0 && (
+            {mounted && totalItems > 0 && (
               <span
                 style={{
                   position: "absolute",
@@ -188,7 +204,7 @@ export default function Navbar() {
 
           {/* User / Login */}
           {user ? (
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative" }} ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
                 style={{ width: "40px", height: "40px", borderRadius: "50%", border: "2px solid var(--color-primary)", background: "rgba(200,169,110,0.12)", cursor: "pointer", fontSize: "1.2rem", display: "flex", alignItems: "center", justifyContent: "center" }}

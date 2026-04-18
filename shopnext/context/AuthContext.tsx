@@ -1,17 +1,9 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import type { ShippingInfo } from "@/lib/types";
 
 /* ─── Types ─────────────────────────────────────────────── */
-export interface ShippingInfo {
-  fullName: string;
-  phone: string;
-  address: string;
-  ward: string;
-  district: string;
-  city: string;
-}
-
 export interface User {
   id: string;
   name: string;
@@ -35,6 +27,7 @@ interface AuthContextType {
   logout: () => void;
   updateProfile: (data: Partial<User>) => void;
   updateShipping: (info: ShippingInfo) => void;
+  changePassword: (oldPw: string, newPw: string) => { ok: boolean; error?: string };
 }
 
 /* ─── Seed accounts ─────────────────────────────────────── */
@@ -61,9 +54,15 @@ function loadAccounts(): StoredAccount[] {
 }
 
 function saveAccounts(accounts: StoredAccount[]) {
-  // Only persist non-seed (registered) accounts
-  const seeds = new Set(SEED_ACCOUNTS.map((s) => s.id));
-  const toSave = accounts.filter((a) => !seeds.has(a.id));
+  // Bug 4 fix: persist all accounts including seed accounts that have been modified.
+  // We compare each seed account with its original; if modified, it must be stored.
+  const seedMap = new Map(SEED_ACCOUNTS.map((s) => [s.id, s]));
+  const toSave = accounts.filter((a) => {
+    const original = seedMap.get(a.id);
+    if (!original) return true;  // registered user, always save
+    // Save seed account only if it differs from the original defaults
+    return JSON.stringify(a) !== JSON.stringify(original);
+  });
   localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(toSave));
 }
 
@@ -163,6 +162,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!user) return;
     const updated = { ...user, shippingInfo: info };
     persistUser(updated);
+
+    // Bug 5 fix: also sync shippingInfo into the accounts store
+    const accounts = loadAccounts();
+    const idx = accounts.findIndex((a) => a.id === user.id);
+    if (idx !== -1) {
+      accounts[idx] = { ...accounts[idx], shippingInfo: info };
+      saveAccounts(accounts);
+    }
+  };
+
+  /* Change password – Bug 1 fix: actually verify old pw & persist new pw */
+  const changePassword = (oldPw: string, newPw: string): { ok: boolean; error?: string } => {
+    if (!user) return { ok: false, error: "Chưa đăng nhập" };
+    const accounts = loadAccounts();
+    const idx = accounts.findIndex((a) => a.id === user.id);
+    if (idx === -1) return { ok: false, error: "Tài khoản không tồn tại trong hệ thống" };
+    if (accounts[idx].password !== oldPw) return { ok: false, error: "Mật khẩu hiện tại không đúng" };
+    accounts[idx] = { ...accounts[idx], password: newPw };
+    saveAccounts(accounts);
+    return { ok: true };
   };
 
   const logout = () => {
@@ -171,7 +190,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, loginWithSocial, register, logout, updateProfile, updateShipping }}>
+    <AuthContext.Provider value={{ user, isLoading, login, loginWithSocial, register, logout, updateProfile, updateShipping, changePassword }}>
       {children}
     </AuthContext.Provider>
   );

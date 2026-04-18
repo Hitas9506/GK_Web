@@ -4,9 +4,9 @@ import { getFeaturedProducts } from "@/lib/data";
 import ProductCard from "@/components/ProductCard";
 
 export const metadata: Metadata = {
-  title: "ShopNext – Thời Trang Phong Cách",
+  title: "ShopNext – Chất Lượng Được Ghi Nhớ Mãi",
   description:
-    "Khám phá bộ sưu tập thời trang mới nhất tại ShopNext. Hàng ngàn sản phẩm chất lượng, giá tốt, giao hàng toàn quốc.",
+    "Chất lượng được ghi nhớ mãi, sau khi giá cả đã bị lãng quên. ShopNext – cửa hàng thời trang chất lượng cao, giao hàng toàn quốc.",
 };
 
 // This page uses Static Site Generation (SSG)
@@ -133,7 +133,7 @@ export default function HomePage() {
                 border: "1px solid rgba(200,169,110,0.3)",
               }}
             >
-              ✨ Bộ sưu tập mới nhất 2025
+              📜 Quality is remembered long after price is forgotten
             </span>
             <h1
               style={{
@@ -144,7 +144,7 @@ export default function HomePage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Phong Cách{" "}
+              Chất Lượng{" "}
               <span
                 style={{
                   background:
@@ -153,10 +153,10 @@ export default function HomePage() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Của Bạn
+                Được Ghi Nhớ Mãi
               </span>
               , <br />
-              Xu Hướng Của Chúng Tôi
+              Giá Cả Đã Bị Lãng Quên
             </h1>
             <p
               style={{
@@ -167,8 +167,8 @@ export default function HomePage() {
                 maxWidth: "480px",
               }}
             >
-              Khám phá hàng ngàn sản phẩm thời trang được tuyển chọn kỹ lưỡng.
-              Từ casual đến formal, chúng tôi có tất cả những gì bạn cần.
+              Chúng tôi tin rằng chất lượng là thứ khách hàng ghi nhớ lâu dài nhất.
+              Mỗi sản phẩm ShopNext được tuyển chọn khắt khe để chứng minh điều đó.
             </p>
             <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <Link href="/products" className="btn-primary">

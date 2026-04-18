@@ -24,10 +24,30 @@ interface CartContextType {
   totalPrice: number;
 }
 
+const CART_KEY = "shopnext_cart";
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+/** Persist helper */
+function persistCart(next: CartItem[]) {
+  try {
+    localStorage.setItem(CART_KEY, JSON.stringify(next));
+  } catch {
+    /* ignore quota errors */
+  }
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  // Bug 2 fix: read from localStorage on first render so cart survives refreshes
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === "undefined") return [];
+    try {
+      const raw = localStorage.getItem(CART_KEY);
+      return raw ? (JSON.parse(raw) as CartItem[]) : [];
+    } catch {
+      return [];
+    }
+  });
 
   const addItem = useCallback(
     (product: Product, size: string, color: string) => {
@@ -38,14 +58,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
             i.size === size &&
             i.color === color
         );
-        if (existing) {
-          return prev.map((i) =>
-            i.product.id === product.id && i.size === size && i.color === color
-              ? { ...i, quantity: i.quantity + 1 }
-              : i
-          );
-        }
-        return [...prev, { product, quantity: 1, size, color }];
+        const next = existing
+          ? prev.map((i) =>
+              i.product.id === product.id && i.size === size && i.color === color
+                ? { ...i, quantity: i.quantity + 1 }
+                : i
+            )
+          : [...prev, { product, quantity: 1, size, color }];
+        persistCart(next);
+        return next;
       });
     },
     []
@@ -53,16 +74,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const removeItem = useCallback(
     (productId: number, size: string, color: string) => {
-      setItems((prev) =>
-        prev.filter(
+      setItems((prev) => {
+        const next = prev.filter(
           (i) =>
             !(
               i.product.id === productId &&
               i.size === size &&
               i.color === color
             )
-        )
-      );
+        );
+        persistCart(next);
+        return next;
+      });
     },
     []
   );
@@ -73,18 +96,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeItem(productId, size, color);
         return;
       }
-      setItems((prev) =>
-        prev.map((i) =>
+      setItems((prev) => {
+        const next = prev.map((i) =>
           i.product.id === productId && i.size === size && i.color === color
             ? { ...i, quantity }
             : i
-        )
-      );
+        );
+        persistCart(next);
+        return next;
+      });
     },
     [removeItem]
   );
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    setItems([]);
+    persistCart([]);
+  }, []);
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = items.reduce(

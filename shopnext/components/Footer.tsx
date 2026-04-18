@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const currentYear = 2026; // Static to avoid SSR/CSR hydration mismatch
 
   return (
     <footer
@@ -76,8 +76,7 @@ export default function Footer() {
                 marginBottom: "1rem",
               }}
             >
-              Cửa hàng thời trang online – nơi phong cách gặp gỡ chất lượng.
-              Hàng ngàn sản phẩm đa dạng, giao hàng toàn quốc.
+              “Chất lượng được ghi nhớ mãi, sau khi giá cả đã bị lãng quên.”
             </p>
             <div style={{ display: "flex", gap: "0.75rem" }}>
               {["📘", "📸", "🐦", "📺"].map((icon, i) => (
@@ -133,11 +132,11 @@ export default function Footer() {
             </h4>
             <nav>
               {[
-                { href: "/about", label: "Về Chúng Tôi" },
-                { href: "#", label: "Chính Sách Đổi Trả" },
-                { href: "#", label: "Hướng Dẫn Size" },
-                { href: "#", label: "Theo Dõi Đơn Hàng" },
-                { href: "#", label: "Liên Hệ" },
+                { href: "/about",              label: "Về Chúng Tôi" },
+                { href: "/chinh-sach-doi-tra", label: "Chính Sách Đổi Trả" },
+                { href: "/huong-dan-size",     label: "Hướng Dẫn Size" },
+                { href: "/orders",             label: "Theo Dõi Đơn Hàng" },
+                { href: "/lien-he",            label: "Liên Hệ" },
               ].map((link) => (
                 <Link key={link.label} href={link.href} className="footer-link">
                   {link.label}

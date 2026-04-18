@@ -43,7 +43,7 @@ export default function OrdersPage() {
     if (user?.role === "admin") {
       setOrders(raw);
     } else if (user) {
-      setOrders(raw.filter((o) => (o as Order & { userId?: string }).userId === user.id || !(o as Order & { userId?: string }).userId));
+      setOrders(raw.filter((o) => o.userId === user.id || !o.userId));
     }
     setMounted(true);
   }, [user]);
@@ -66,7 +66,7 @@ export default function OrdersPage() {
       setOrders([]);
     } else {
       const raw: Order[] = JSON.parse(localStorage.getItem("shopnext_orders") ?? "[]");
-      const kept = raw.filter((o) => (o as Order & { userId?: string }).userId !== user.id);
+      const kept = raw.filter((o) => o.userId !== user.id);
       localStorage.setItem("shopnext_orders", JSON.stringify(kept));
       setOrders([]);
     }
@@ -105,7 +105,7 @@ export default function OrdersPage() {
                 const st     = STATUS_CONFIG[order.status] ?? STATUS_CONFIG.confirmed;
                 const isOpen = expanded === order.id;
                 const canCancel = order.status === "pending" || order.status === "confirmed";
-                const shipInfo  = (order as Order & { shippingInfo?: { fullName: string; phone: string; address: string; ward: string; district: string; city: string } }).shippingInfo;
+                const shipInfo  = order.shippingInfo;
 
                 return (
                   <div key={order.id} style={{ background: "white", borderRadius: "16px", border: "1px solid var(--color-border)", overflow: "hidden", boxShadow: isOpen ? "0 8px 24px rgba(0,0,0,0.08)" : "none", transition: "box-shadow 0.2s" }}>

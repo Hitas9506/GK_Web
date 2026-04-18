@@ -41,4 +41,15 @@ export interface Order {
   total: number;
   paymentMethod: string;
   status: OrderStatus;
+  shippingInfo?: ShippingInfo;
+  userId?: string;
+}
+
+export interface ShippingInfo {
+  fullName: string;
+  phone: string;
+  address: string;
+  ward: string;
+  district: string;
+  city: string;
 }

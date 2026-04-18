@@ -6,8 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
-import type { Order } from "@/lib/types";
-import type { ShippingInfo } from "@/context/AuthContext";
+import type { Order, ShippingInfo } from "@/lib/types";
+import ShippingForm from "@/components/ShippingForm";
 
 const PAYMENT_METHODS = [
   { id: "cod",   label: "Tiền mặt khi giao hàng", icon: "💵", desc: "Thanh toán khi nhận hàng" },
@@ -20,7 +20,6 @@ const PAYMENT_LABELS: Record<string, string> = {
   cod: "Tiền mặt khi giao hàng", momo: "Ví MoMo", zalo: "ZaloPay", vnpay: "Cổng thanh toán VNPay",
 };
 
-const CITIES = ["Hà Nội","TP. Hồ Chí Minh","Đà Nẵng","Cần Thơ","Hải Phòng","Biên Hòa","Nha Trang","Huế","Buôn Ma Thuột","Vũng Tàu"];
 
 const inputS: React.CSSProperties = {
   width: "100%", padding: "0.6rem 0.85rem", borderRadius: "9px",
@@ -79,7 +78,7 @@ export default function CartPage() {
       status: "confirmed",
       shippingInfo: shipForm,
       userId: user?.id ?? "guest",
-    } as Order & { shippingInfo: ShippingInfo; userId: string };
+    };
 
     const existing: Order[] = JSON.parse(localStorage.getItem("shopnext_orders") ?? "[]");
     localStorage.setItem("shopnext_orders", JSON.stringify([order, ...existing]));
@@ -235,44 +234,18 @@ export default function CartPage() {
                   {user?.shippingInfo && (
                     <p style={{ fontSize: "0.76rem", color: "#27ae60", marginBottom: "0.75rem" }}>✓ Đã tự điền từ hồ sơ của bạn</p>
                   )}
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-                      <div>
-                        <label style={{ fontSize: "0.78rem", fontWeight: 600, display: "block", marginBottom: "0.25rem" }}>Họ tên *</label>
-                        <input value={shipForm.fullName} onChange={(e) => setShipForm({ ...shipForm, fullName: e.target.value })} placeholder="Nguyễn Văn A" style={inputS} onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")} onBlur={(e) => (e.target.style.border = "2px solid var(--color-border)")} />
-                      </div>
-                      <div>
-                        <label style={{ fontSize: "0.78rem", fontWeight: 600, display: "block", marginBottom: "0.25rem" }}>SĐT *</label>
-                        <input value={shipForm.phone} onChange={(e) => setShipForm({ ...shipForm, phone: e.target.value })} placeholder="0901234567" style={inputS} onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")} onBlur={(e) => (e.target.style.border = "2px solid var(--color-border)")} />
-                      </div>
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "0.78rem", fontWeight: 600, display: "block", marginBottom: "0.25rem" }}>Địa chỉ *</label>
-                      <input value={shipForm.address} onChange={(e) => setShipForm({ ...shipForm, address: e.target.value })} placeholder="123 Đường Lê Lợi" style={inputS} onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")} onBlur={(e) => (e.target.style.border = "2px solid var(--color-border)")} />
-                    </div>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-                      <div>
-                        <label style={{ fontSize: "0.78rem", fontWeight: 600, display: "block", marginBottom: "0.25rem" }}>Phường/Xã</label>
-                        <input value={shipForm.ward} onChange={(e) => setShipForm({ ...shipForm, ward: e.target.value })} placeholder="Phường Bến Nghé" style={inputS} onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")} onBlur={(e) => (e.target.style.border = "2px solid var(--color-border)")} />
-                      </div>
-                      <div>
-                        <label style={{ fontSize: "0.78rem", fontWeight: 600, display: "block", marginBottom: "0.25rem" }}>Quận/Huyện</label>
-                        <input value={shipForm.district} onChange={(e) => setShipForm({ ...shipForm, district: e.target.value })} placeholder="Quận 1" style={inputS} onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")} onBlur={(e) => (e.target.style.border = "2px solid var(--color-border)")} />
-                      </div>
-                    </div>
-                    <div>
-                      <label style={{ fontSize: "0.78rem", fontWeight: 600, display: "block", marginBottom: "0.25rem" }}>Tỉnh/Thành phố *</label>
-                      <select value={shipForm.city} onChange={(e) => setShipForm({ ...shipForm, city: e.target.value })} style={{ ...inputS, cursor: "pointer" }}>
-                        <option value="">-- Chọn tỉnh/thành --</option>
-                        {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                      </select>
-                    </div>
-                  </div>
+                  <ShippingForm value={shipForm} onChange={setShipForm} compact />
                 </div>
                 <div style={{ display: "flex", gap: "0.75rem", padding: "1rem 1.5rem 1.5rem", borderTop: "1px solid var(--color-border)" }}>
                   <button onClick={() => setStep(1)} style={{ flex: 1, padding: "0.72rem", borderRadius: "10px", border: "2px solid var(--color-border)", background: "white", cursor: "pointer", fontWeight: 600, fontSize: "0.88rem", color: "var(--color-text-muted)", fontFamily: "inherit" }}>← Quay lại</button>
                   <button
-                    onClick={() => { if (!shipForm.fullName || !shipForm.phone || !shipForm.address || !shipForm.city) { alert("Vui lòng điền đầy đủ thông tin giao hàng (*)"); return; } handleConfirm(); }}
+                    onClick={() => {
+                      if (!shipForm.fullName || !shipForm.phone || !shipForm.address || !shipForm.city || !shipForm.district || !shipForm.ward) {
+                        alert("Vui lòng điền đầy đủ thông tin giao hàng (*)");
+                        return;
+                      }
+                      handleConfirm();
+                    }}
                     style={{ flex: 2, padding: "0.72rem", borderRadius: "10px", border: "none", background: "linear-gradient(135deg,#b0895c,#8a6537)", color: "white", cursor: "pointer", fontWeight: 700, fontSize: "0.9rem", boxShadow: "0 4px 14px rgba(176,137,92,0.4)", fontFamily: "inherit" }}>
                     Xác Nhận Đặt Hàng ✓
                   </button>

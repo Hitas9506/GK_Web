@@ -15,7 +15,7 @@ export default function ProductDetailClient({
   product: Product;
   related: Product[];
 }) {
-  const { addItem } = useCart();
+  const { addItem, updateQuantity, items } = useCart();
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const [quantity, setQuantity] = useState(1);
@@ -23,6 +23,7 @@ export default function ProductDetailClient({
     "desc"
   );
   const [added, setAdded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   const discount = product.originalPrice
     ? calculateDiscount(product.originalPrice, product.price)
@@ -36,8 +37,15 @@ export default function ProductDetailClient({
   };
 
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addItem(product, selectedSize, selectedColor);
+    // Bug 13 fix: add once then set correct quantity rather than calling addItem N times
+    addItem(product, selectedSize, selectedColor);
+    if (quantity > 1) {
+      // Find if item already existed before or was just added (both need quantity set)
+      const existing = items.find(
+        (i) => i.product.id === product.id && i.size === selectedSize && i.color === selectedColor
+      );
+      const newQty = (existing ? existing.quantity : 0) + quantity;
+      updateQuantity(product.id, selectedSize, selectedColor, newQty);
     }
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
@@ -88,24 +96,25 @@ export default function ProductDetailClient({
             boxShadow: "0 8px 40px rgba(0,0,0,0.1)",
           }}
         >
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 50vw"
-            style={{ objectFit: "cover" }}
-            onError={(e) => {
-              const t = e.currentTarget as HTMLImageElement;
-              t.style.display = "none";
-              const parent = t.parentElement;
-              if (parent) {
-                parent.style.background =
-                  "linear-gradient(135deg, #f7f4f0, #e8e0d5)";
-                parent.innerHTML += `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:8rem">👗</div>`;
-              }
-            }}
-          />
+          {/* Bug 8 fix: React state fallback instead of innerHTML */}
+          {imgError ? (
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(135deg, #f7f4f0, #e8e0d5)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "8rem",
+            }}>👗</div>
+          ) : (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover" }}
+              onError={() => setImgError(true)}
+            />
+          )}
           {product.badge && (
             <span
               className={`badge badge-${product.badge}`}

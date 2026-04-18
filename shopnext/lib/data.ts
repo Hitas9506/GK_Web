@@ -1,11 +1,12 @@
 import { Product, Category } from "./types";
 
+// Bug 6 fix: counts are computed after products array is defined (see bottom of file)
 export const categories: Category[] = [
-  { id: "all", name: "Tất cả", icon: "🛍️", count: 24 },
-  { id: "ao", name: "Áo", icon: "👕", count: 8 },
-  { id: "quan", name: "Quần", icon: "👖", count: 5 },
-  { id: "vay", name: "Váy & Đầm", icon: "👗", count: 5 },
-  { id: "phu-kien", name: "Phụ kiện", icon: "👜", count: 6 },
+  { id: "all",      name: "Tất cả",    icon: "🛍️", count: 0 },
+  { id: "ao",       name: "Áo",        icon: "👕", count: 0 },
+  { id: "quan",     name: "Quần",      icon: "👖", count: 0 },
+  { id: "vay",      name: "Váy & Đầm", icon: "👗", count: 0 },
+  { id: "phu-kien", name: "Phụ kiện",  icon: "👜", count: 0 },
 ];
 
 export const products: Product[] = [
@@ -454,3 +455,10 @@ export function searchProducts(query: string): Product[] {
       p.category.toLowerCase().includes(q)
   );
 }
+
+// Bug 6 fix: populate category counts from actual products data
+categories.forEach((cat) => {
+  cat.count = cat.id === "all"
+    ? products.length
+    : products.filter((p) => p.category === cat.id).length;
+});

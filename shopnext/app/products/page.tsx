@@ -41,7 +41,7 @@ export default async function ProductsPage(props: {
         <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem" }}>
           {filtered.length} sản phẩm{" "}
           {activeCategory !== "all"
-            ? `trong danh mục "${activeCategory}"`
+            ? `trong danh mục "${categories.find((c) => c.id === activeCategory)?.name ?? activeCategory}"`
             : ""}
         </p>
       </div>

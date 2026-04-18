@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import type { ShippingInfo } from "@/context/AuthContext";
+import type { ShippingInfo } from "@/lib/types";
+import ShippingForm from "@/components/ShippingForm";
 
-const CITIES = ["Hà Nội","TP. Hồ Chí Minh","Đà Nẵng","Cần Thơ","Hải Phòng","Biên Hòa","Nha Trang","Huế","Buôn Ma Thuột","Vũng Tàu"];
 
 const inputCls: React.CSSProperties = {
   width: "100%", padding: "0.68rem 0.9rem", borderRadius: "9px",
@@ -16,7 +16,7 @@ const inputCls: React.CSSProperties = {
 };
 
 export default function ProfilePage() {
-  const { user, isLoading, updateProfile, updateShipping } = useAuth();
+  const { user, isLoading, updateProfile, updateShipping, changePassword } = useAuth();
   const router = useRouter();
 
   const [tab, setTab] = useState<"info" | "shipping" | "password">("info");
@@ -63,8 +63,11 @@ export default function ProfilePage() {
   const handleChangePassword = (e: React.FormEvent) => {
     e.preventDefault();
     setPwError("");
+    if (!pw.old) { setPwError("Vui lòng nhập mật khẩu hiện tại"); return; }
     if (pw.newPw.length < 6) { setPwError("Mật khẩu mới tối thiểu 6 ký tự"); return; }
     if (pw.newPw !== pw.confirm) { setPwError("Mật khẩu xác nhận không khớp"); return; }
+    const result = changePassword(pw.old, pw.newPw);
+    if (!result.ok) { setPwError(result.error ?? "Đổi mật khẩu thất bại"); return; }
     setPwOk(true);
     setPw({ old: "", newPw: "", confirm: "" });
     setTimeout(() => setPwOk(false), 2500);
@@ -132,50 +135,11 @@ export default function ProfilePage() {
             </form>
           )}
 
-          {/* ── Tab: Địa chỉ giao hàng ── */}
           {tab === "shipping" && (
             <form onSubmit={handleSaveShipping}>
               <h2 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.4rem" }}>Địa chỉ giao hàng</h2>
               <p style={{ fontSize: "0.82rem", color: "var(--color-text-muted)", marginBottom: "1.5rem" }}>Thông tin này sẽ tự điền vào khi bạn thanh toán</p>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="profile-grid">
-                <div>
-                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>Họ tên người nhận *</label>
-                  <input value={ship.fullName} onChange={(e) => setShip({ ...ship, fullName: e.target.value })} placeholder="Nguyễn Văn A" style={inputCls}
-                    onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")}
-                    onBlur={(e)  => (e.target.style.border = "2px solid var(--color-border)")} />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>Số điện thoại *</label>
-                  <input value={ship.phone} onChange={(e) => setShip({ ...ship, phone: e.target.value })} placeholder="0901234567" style={inputCls}
-                    onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")}
-                    onBlur={(e)  => (e.target.style.border = "2px solid var(--color-border)")} />
-                </div>
-                <div style={{ gridColumn: "1 / -1" }}>
-                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>Địa chỉ (số nhà, đường) *</label>
-                  <input value={ship.address} onChange={(e) => setShip({ ...ship, address: e.target.value })} placeholder="123 Đường Lê Lợi" style={inputCls}
-                    onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")}
-                    onBlur={(e)  => (e.target.style.border = "2px solid var(--color-border)")} />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>Phường/Xã</label>
-                  <input value={ship.ward} onChange={(e) => setShip({ ...ship, ward: e.target.value })} placeholder="Phường Bến Nghé" style={inputCls}
-                    onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")}
-                    onBlur={(e)  => (e.target.style.border = "2px solid var(--color-border)")} />
-                </div>
-                <div>
-                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>Quận/Huyện</label>
-                  <input value={ship.district} onChange={(e) => setShip({ ...ship, district: e.target.value })} placeholder="Quận 1" style={inputCls}
-                    onFocus={(e) => (e.target.style.border = "2px solid var(--color-primary)")}
-                    onBlur={(e)  => (e.target.style.border = "2px solid var(--color-border)")} />
-                </div>
-                <div style={{ gridColumn: "1 / -1" }}>
-                  <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>Tỉnh/Thành phố *</label>
-                  <select value={ship.city} onChange={(e) => setShip({ ...ship, city: e.target.value })} style={{ ...inputCls, cursor: "pointer" }}>
-                    <option value="">-- Chọn tỉnh/thành --</option>
-                    {CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                  </select>
-                </div>
-              </div>
+              <ShippingForm value={ship} onChange={setShip} />
               <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginTop: "1.5rem" }}>
                 <button type="submit" style={{ padding: "0.72rem 1.75rem", borderRadius: "10px", border: "none", background: "linear-gradient(135deg,#c8a96e,#a8854a)", color: "white", fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}>
                   Lưu địa chỉ
