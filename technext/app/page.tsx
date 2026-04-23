@@ -323,7 +323,7 @@ export default function HomePage() {
                 <p style={{
                   fontSize: "0.88rem", color: "#444", lineHeight: 1.65,
                   margin: 0, fontStyle: "italic",
-                }}>"{r.text}"</p>
+                }}>&ldquo;{r.text}&rdquo;</p>
                 {/* Customer */}
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "auto" }}>
                   <div style={{
