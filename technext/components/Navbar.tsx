@@ -65,8 +65,8 @@ const TABLET_BRANDS: PhoneBrand[] = [
     products: [
       { name: "iPad Pro M5",       badge: "Mới",  href: "/products/16", desc: "M5 · OLED Ultra Retina XDR",  image: "/images/products/ipad-pro-m5/bac.jpg" },
       { name: "iPad Air M4",       badge: "Mới",  href: "/products/17", desc: "M4 · Liquid Retina 11\"",      image: "/images/products/ipad-air-m4/anh_sao.jpg" },
-      { name: "iPad Gen 11",       badge: "",     href: "/products/18", desc: "A16 · USB-C · 11\"",           image: "/images/products/ipad-gen-11/tim.jpg" },
-      { name: "iPad Mini A17 Pro", badge: "Mới",  href: "/products/19", desc: "A17 Pro · 8.3\" ProMotion",    image: "/images/products/ipad-mini-a17-pro/bac.jpg" },
+      { name: "iPad Gen 11",       badge: "",     href: "/products/18", desc: "A16 · USB-C · 11\"",           image: "/images/products/ipad-gen-11/tim.png" },
+      { name: "iPad Mini A17 Pro", badge: "Mới",  href: "/products/19", desc: "A17 Pro · 8.3\" ProMotion",    image: "/images/products/ipad-mini-a17-pro/bac.webp" },
     ],
     allHref: "/products?category=tablet&brand=apple", allLabel: "Tất cả iPad",
   },
@@ -476,7 +476,7 @@ export default function Navbar() {
   return (
     <header
       ref={navRef}
-      style={{ position: "fixed", top: "48px", left: 0, right: 0, zIndex: 100 }}
+      style={{ position: "fixed", top: "48px", left: 0, right: 0, zIndex: 1000 }}
     >
       {/* ── TOP BAR ── */}
       <div
@@ -587,7 +587,7 @@ export default function Navbar() {
                       borderRadius: "16px",
                       boxShadow: "0 12px 40px rgba(0,0,0,0.13)",
                       minWidth: "320px",
-                      zIndex: 200,
+                      zIndex: 1001,
                       overflow: "hidden",
                       animation: "megaSlideDown 0.18s ease both",
                     }}>
@@ -845,7 +845,7 @@ export default function Navbar() {
                   border: "1px solid rgba(0,0,0,0.09)",
                   borderRadius: "16px",
                   boxShadow: "0 16px 48px rgba(0,0,0,0.13)",
-                  minWidth: "210px", zIndex: 200, overflow: "hidden",
+                  minWidth: "210px", zIndex: 1001, overflow: "hidden",
                   animation: "megaSlideDown 0.18s ease both",
                 }}>
 

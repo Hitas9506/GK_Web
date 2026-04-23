@@ -38,15 +38,18 @@ export default function OrdersPage() {
   }, [user, isLoading, router]);
 
   useEffect(() => {
+    if (isLoading) return;          // chờ auth xong
+    if (!user)    { setMounted(true); return; } // auth done, không đăng nhập → redirect effect xử lý
+
     const raw: Order[] = JSON.parse(localStorage.getItem("technext_orders") ?? "[]");
-    // Admin sees all, others see own
-    if (user?.role === "admin") {
+    if (user.role === "admin") {
       setOrders(raw);
-    } else if (user) {
+    } else {
       setOrders(raw.filter((o) => o.userId === user.id || !o.userId));
     }
     setMounted(true);
-  }, [user]);
+  }, [user, isLoading]);
+
 
   if (!mounted || isLoading || !user) return null;
 

@@ -134,7 +134,7 @@ function CompareBar({ items, onRemove, onClear }: { items: Product[]; onRemove: 
   if (items.length === 0) return null;
   return (
     <div style={{
-      position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 800,
+      position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 199,
       background: "rgba(26,26,26,0.97)", backdropFilter: "blur(16px)",
       borderTop: "1px solid rgba(255,255,255,0.1)",
       padding: "0.75rem 1.5rem",
@@ -532,7 +532,7 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
 
       {/* STICKY TOOLBAR */}
       <div style={{
-        position: "sticky", top: "92px", zIndex: 100,
+        position: "sticky", top: "92px", zIndex: 99,
         background: "rgba(255,255,255,0.97)", backdropFilter: "blur(12px)",
         borderBottom: "1px solid rgba(0,0,0,0.08)",
         boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
@@ -611,7 +611,7 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
             <div id="tn-filter-popup" style={{
               position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0,
               display: "flex", justifyContent: "flex-start",
-              zIndex: 500, padding: "0 1.5rem",
+              zIndex: 199, padding: "0 1.5rem",
             }}>
               <div style={{
                 background: "white", borderRadius: "18px",
@@ -644,9 +644,8 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
                     </button>
                   </div>
                 </div>
-                {/* 2-column filter grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 2.5rem",
-                  overflowY: "auto", flex: 1, alignContent: "start" }}>
+                {/* Filter content — full width, scrollable */}
+                <div style={{ overflowY: "auto", flex: 1 }}>
                   <FilterPanel f={f} set={set} clearAll={clearAll} activeCount={activeCount} />
                 </div>
                 <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)", paddingTop: "0.85rem",
@@ -760,7 +759,7 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
       {/* MOBILE DRAWER */}
       {mobileOpen && (
         <div style={{
-          position: "fixed", inset: 0, zIndex: 900,
+          position: "fixed", inset: 0, zIndex: 999,
           background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "flex-end",
         }} onClick={e => { if (e.target === e.currentTarget) setMobileOpen(false); }}>
           <div style={{

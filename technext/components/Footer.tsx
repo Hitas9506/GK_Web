@@ -9,8 +9,6 @@ export default function Footer() {
     "Sản Phẩm": [
       { label: "Điện Thoại", href: "/products?category=dien-thoai" },
       { label: "Máy Tính Bảng", href: "/products?category=tablet" },
-      { label: "Tai Nghe", href: "/products?category=tai-nghe" },
-      { label: "Phụ Kiện", href: "/products?category=phu-kien" },
       { label: "Tất Cả Sản Phẩm", href: "/products" },
     ],
     "Hỗ Trợ": [
@@ -185,41 +183,7 @@ export default function Footer() {
         ))}
       </div>
 
-      {/* Divider + Bottom */}
-      <div
-        style={{
-          maxWidth: "1280px",
-          margin: "2.5rem auto 0",
-          paddingTop: "1.5rem",
-          borderTop: "1px solid rgba(255,255,255,0.1)",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "0.75rem",
-        }}
-      >
-        <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)" }}>
-          © {currentYear} TechNext. All rights reserved. Made with Next.js 16 ⚡
-        </p>
-        <div style={{ display: "flex", gap: "1.25rem" }}>
-          {["Điều khoản", "Bảo mật", "Cookies"].map((t) => (
-            <a
-              key={t}
-              href="#"
-              className="footer-link"
-              style={{
-                color: "rgba(255,255,255,0.4)",
-                textDecoration: "none",
-                fontSize: "0.78rem",
-                transition: "color 0.2s ease",
-              }}
-            >
-              {t}
-            </a>
-          ))}
-        </div>
-      </div>
+
 
       <style>{`
         .footer-link:hover { color: var(--color-primary) !important; }
