@@ -5,6 +5,37 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 
+/* ── Field component defined outside render to avoid re-creation ── */
+interface FieldProps {
+  label: string; field: string; type?: string; placeholder: string;
+  extra?: React.ReactNode;
+  form: Record<string, string>;
+  errors: Record<string, string>;
+  showPw: boolean;
+  set: (field: string, value: string) => void;
+  inputStyle: (hasErr: boolean) => React.CSSProperties;
+}
+function Field({ label, field, type = "text", placeholder, extra, form, errors, showPw, set, inputStyle }: FieldProps) {
+  return (
+    <div>
+      <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>{label}</label>
+      <div style={{ position: "relative" }}>
+        <input
+          type={field === "password" || field === "confirm" ? (showPw ? "text" : "password") : type}
+          value={form[field] ?? ""}
+          onChange={(e) => set(field, e.target.value)}
+          placeholder={placeholder}
+          style={{ ...inputStyle(!!errors[field]), paddingRight: extra ? "2.8rem" : "1rem" }}
+          onFocus={(e) => { if (!errors[field]) e.target.style.border = "2px solid var(--color-primary)"; }}
+          onBlur={(e)  => { if (!errors[field]) e.target.style.border = "2px solid var(--color-border)"; }}
+        />
+        {extra}
+      </div>
+      {errors[field] && <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: "0.25rem" }}>⚠️ {errors[field]}</p>}
+    </div>
+  );
+}
+
 export default function RegisterPage() {
   const { register } = useAuth();
   const router = useRouter();
@@ -52,24 +83,8 @@ export default function RegisterPage() {
     background: hasErr ? "#fff5f5" : "white",
   });
 
-  const Field = ({ label, field, type = "text", placeholder, extra }: { label: string; field: string; type?: string; placeholder: string; extra?: React.ReactNode }) => (
-    <div>
-      <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, marginBottom: "0.35rem" }}>{label}</label>
-      <div style={{ position: "relative" }}>
-        <input
-          type={field === "password" || field === "confirm" ? (showPw ? "text" : "password") : type}
-          value={form[field as keyof typeof form]}
-          onChange={(e) => set(field, e.target.value)}
-          placeholder={placeholder}
-          style={{ ...inputStyle(!!errors[field]), paddingRight: extra ? "2.8rem" : "1rem" }}
-          onFocus={(e) => { if (!errors[field]) e.target.style.border = "2px solid var(--color-primary)"; }}
-          onBlur={(e)  => { if (!errors[field]) e.target.style.border = "2px solid var(--color-border)"; }}
-        />
-        {extra}
-      </div>
-      {errors[field] && <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: "0.25rem" }}>⚠️ {errors[field]}</p>}
-    </div>
-  );
+  const fieldProps = { form, errors, showPw, set, inputStyle };
+
 
   return (
     <div style={{ paddingTop: "92px", minHeight: "100vh", background: "linear-gradient(135deg,#F5F5F5,#E8E8E8)", display: "flex", alignItems: "center", justifyContent: "center", padding: "90px 1.5rem 3rem" }}>
@@ -89,9 +104,9 @@ export default function RegisterPage() {
           <h1 style={{ fontSize: "1.35rem", fontWeight: 800, marginBottom: "1.5rem" }}>Đăng Ký</h1>
 
           <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <Field label="Họ và tên" field="name" placeholder="Nguyễn Văn A" />
-            <Field label="Email" field="email" type="email" placeholder="email@example.com" />
-            <Field label="Mật khẩu" field="password" placeholder="Tối thiểu 6 ký tự"
+            <Field {...fieldProps} label="Họ và tên" field="name" placeholder="Nguyễn Văn A" />
+            <Field {...fieldProps} label="Email" field="email" type="email" placeholder="email@example.com" />
+            <Field {...fieldProps} label="Mật khẩu" field="password" placeholder="Tối thiểu 6 ký tự"
               extra={
                 <button type="button" onClick={() => setShowPw(!showPw)}
                   style={{ position: "absolute", right: "0.75rem", top: "50%", transform: "translateY(-50%)", border: "none", background: "transparent", cursor: "pointer", fontSize: "1rem", color: "var(--color-text-muted)" }}>
@@ -99,7 +114,7 @@ export default function RegisterPage() {
                 </button>
               }
             />
-            <Field label="Xác nhận mật khẩu" field="confirm" placeholder="Nhập lại mật khẩu" />
+            <Field {...fieldProps} label="Xác nhận mật khẩu" field="confirm" placeholder="Nhập lại mật khẩu" />
 
             {/* Password strength indicator */}
             {form.password.length > 0 && (

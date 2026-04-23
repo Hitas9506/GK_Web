@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { formatPrice } from "@/lib/utils";
 import HeroCarousel from "@/components/HeroCarousel";
 import FlashSaleCountdown from "@/components/FlashSaleCountdown";
@@ -15,10 +16,10 @@ const CAT_TILES = [
 
 /* ─── Flash sale items (static data so no "products" export needed) ─ */
 const FLASH_ITEMS = [
-  { id: "f1", name: "iPhone 17 Pro Max 256GB",    href: "/products/1",  originalPrice: 34_990_000, salePrice: 27_990_000, discount: 20, brand: "Apple",   bg: "linear-gradient(135deg,#2c2c2e,#1c1c1e)", icon: "📱" },
-  { id: "f2", name: "Xiaomi 17 Ultra 256GB",      href: "/products/6",  originalPrice: 29_990_000, salePrice: 23_990_000, discount: 20, brand: "Xiaomi",  bg: "linear-gradient(135deg,#1a0d00,#3d1a00)", icon: "📱" },
-  { id: "f3", name: "Galaxy S26 Ultra 256GB",     href: "/products/10", originalPrice: 36_990_000, salePrice: 29_990_000, discount: 19, brand: "Samsung", bg: "linear-gradient(135deg,#08122a,#1428A0)", icon: "📱" },
-  { id: "f4", name: "iPad Pro M5 256GB",          href: "/products/16", originalPrice: 26_990_000, salePrice: 20_990_000, discount: 22, brand: "Apple",   bg: "linear-gradient(135deg,#1a1a2e,#0f3460)",   icon: "📲" },
+  { id: "f1", name: "iPhone 17 Pro Max 256GB",    href: "/products/1",  originalPrice: 40_990_000, salePrice: 36_990_000, discount: 10, brand: "Apple",   bg: "linear-gradient(135deg,#2c2c2e,#1c1c1e)", image: "/images/products/iphone-17-pro-max/cam_vu_tru.jpg" },
+  { id: "f2", name: "Xiaomi 17 Ultra 512GB",      href: "/products/7",  originalPrice: 35_190_000, salePrice: 31_190_000, discount: 11, brand: "Xiaomi",  bg: "linear-gradient(135deg,#1a0d00,#3d1a00)", image: "/images/products/xiaomi-17-ultra/den.png" },
+  { id: "f3", name: "Galaxy S26 Ultra 256GB",     href: "/products/10", originalPrice: 35_690_000, salePrice: 30_690_000, discount: 14, brand: "Samsung", bg: "linear-gradient(135deg,#08122a,#1428A0)", image: "/images/products/samsung-galaxy-s26-ultra/default_1_1.jpg" },
+  { id: "f4", name: "iPad Pro M5 Wi-Fi 256GB",    href: "/products/16", originalPrice: 31_190_000, salePrice: 28_190_000, discount: 10, brand: "Apple",   bg: "linear-gradient(135deg,#1a1a2e,#0f3460)",   image: "/images/products/ipad-pro-m5/bac.jpg" },
 ];
 
 /* ─── Partner brands ─────────────────────────────────────── */
@@ -183,24 +184,32 @@ export default function HomePage() {
                   transition: "transform 0.22s ease, box-shadow 0.22s ease",
                 }}
               >
-                {/* Product image placeholder */}
+                {/* Product image */}
                 <div style={{
                   position: "relative", aspectRatio: "1/1",
                   background: item.bg,
-                  display: "flex", alignItems: "center", justifyContent: "center",
+                  overflow: "hidden",
                 }}>
-                  <span style={{ fontSize: "3.5rem" }}>{item.icon}</span>
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    style={{ objectFit: "contain", padding: "1rem" }}
+                  />
                   <span style={{
                     position: "absolute", top: "10px", left: "10px",
                     background: "#FF6700", color: "white",
                     fontSize: "0.68rem", fontWeight: 900,
                     padding: "0.22rem 0.6rem", borderRadius: "20px",
+                    zIndex: 2,
                   }}>-{item.discount}%</span>
                   <span style={{
                     position: "absolute", top: "10px", right: "10px",
                     background: "rgba(255,255,255,0.1)", color: "#ccc",
                     fontSize: "0.62rem", fontWeight: 600,
                     padding: "0.2rem 0.5rem", borderRadius: "6px",
+                    zIndex: 2,
                   }}>{item.brand}</span>
                 </div>
                 {/* Info */}
@@ -323,7 +332,7 @@ export default function HomePage() {
                 <p style={{
                   fontSize: "0.88rem", color: "#444", lineHeight: 1.65,
                   margin: 0, fontStyle: "italic",
-                }}>"{r.text}"</p>
+                }}>&ldquo;{r.text}&rdquo;</p>
                 {/* Customer */}
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "auto" }}>
                   <div style={{

@@ -294,3 +294,66 @@ Nộp Bài      ░░░░░░░░░░░░░░░░░░░░   0
 | TypeScript | 5.x |
 | Tailwind CSS | 4.x |
 | Motion | ^12.38.0 |
+
+---
+
+## PHẦN 5: CẬP NHẬT TÍNH NĂNG (Đã Hoàn Thành)
+
+> Ghi lại các cải tiến bổ sung theo yêu cầu người dùng.
+
+### 5.1 Cải Thiện Dữ Liệu & Danh Mục (Session 1)
+- [x] **Gỡ bỏ danh mục "Tai Nghe" và "Phụ Kiện"** – Web chỉ tập trung điện thoại & tablet
+- [x] **Thêm trường `brand`** vào interface `Product` và toàn bộ 25 sản phẩm
+- [x] **Cập nhật `ProductsClient.tsx`** – Component lọc sản phẩm client-side mới hoàn toàn
+- [x] **Sửa mega-menu Navbar** – Gỡ bỏ Tai Nghe / Phụ Kiện, giữ Điện Thoại + Tablet
+- [x] **Product page** (`app/products/page.tsx`) refactor thành thin wrapper gọi `ProductsClient`
+
+### 5.2 Navbar Hover Fix (Session 2 – Lần 1)
+- [x] **Tăng delay đóng mega-menu** từ 120ms → 350ms (đủ thời gian di chuột vào dropdown)
+- [x] **Thêm `cancelClose()`** vào mega-menu panel – panel không đóng khi chuột đang bên trong
+- [x] **User menu** (`onMouseLeave` instant → `userTimer` 350ms delay)
+- [x] **Thêm `cancelCloseUser()`** vào dropdown panel – đăng nhập không bị đóng khi di chuột
+
+### 5.3 Hệ Thống Lọc Nâng Cao 10 Chiều (Session 2 – Lần 1)
+- [x] **10 bộ lọc**: Thương hiệu · Mức giá · Đánh giá · RAM · Dung lượng ROM · Hệ điều hành · Tần số quét · Sạc nhanh (W) · Nhu cầu · Tính năng đặc biệt
+- [x] **Toolbar sticky** – Brand pills, price presets, sort dropdown
+- [x] **Sidebar desktop** với cuộn, **Bottom-sheet mobile** drawer
+- [x] **Live count** – "Hiển thị N sản phẩm", "N bộ lọc đang bật"
+- [x] **Empty state** – Khi 0 kết quả có nút xoá bộ lọc
+
+### 5.4 Tính Năng So Sánh Sản Phẩm (Session 2 – Lần 1)
+- [x] **Nút "⚖️ So sánh"** trên mỗi product card (toggle, tối đa 3 SP)
+- [x] **Compare bar** cố định dưới trang với thumbnail, nút xoá từng SP, nút "So sánh ngay →"
+- [x] **Trang `/compare`** (`app/compare/page.tsx`) – Bảng side-by-side: ảnh, giá (highlight rẻ nhất), đánh giá, nhãn, và toàn bộ detailedSpecs
+
+### 5.5 Sửa Lỗi & Bổ Sung (Session 2 – Lần 2)
+- [x] **[Navbar] Xiaomi 15 Ultra image** – Sửa đường dẫn `den.png` → `bac.jpg` (file thực tế)
+- [x] **[Data] Thêm trường `features[]`** vào interface `Product` (lib/types.ts)
+- [x] **[Data] Gán tags cho 15 điện thoại**:
+  - iPhone 1-5: `["face-id", "ip68", "5g", "nfc", "ai", "magsafe"]`
+  - Xiaomi 17/15: `["5g", "nfc", "ai"]`; Xiaomi 17 Ultra/15 Ultra: thêm `"ip68"`
+  - Samsung S26 Ultra/S25 Ultra: `["5g", "nfc", "ai", "ip68", "s-pen"]`
+  - Samsung S26+/S26/S25+/S25: `["5g", "nfc", "ai", "ip67"]`
+- [x] **[Data] Cập nhật variants RAM/ROM** cho Samsung S25, S25+, S25 Ultra (từ "256GB" → "12GB/256GB")
+- [x] **[Filter] Bộ lọc tính năng dùng `p.features[]`** thay vì string matching → chính xác 100%
+- [x] **[Filter UI] Popup collapsible** – Nút "⚙️ Bộ lọc ▼" mở/đóng panel 2 cột phía dưới toolbar, không phải sidebar cố định
+  - Popup có "Xem N kết quả →" và "Xong ✓"
+  - Click ngoài popup để đóng
+- [x] **[Filter] Sửa nhãn tính năng**:
+  - "AI phone" → **"Hỗ trợ AI"** (rõ ràng hơn)
+  - "Kháng nước" → **"Kháng nước IP68+"** (có chuẩn IP cụ thể)
+- [x] **[Filter] Rating filter** – Hoạt động chính xác với button click
+- [x] **TypeScript** – 0 errors sau tất cả thay đổi
+
+### 5.6 Kết Quả Kiểm Thử
+| Bộ lọc | Kết quả | Đúng mong đợi |
+|---|---|---|
+| Face ID | 5 SP (tất cả iPhone) | ✅ |
+| Kháng nước IP68+ | 9 SP (iPhone + Xiaomi Ultra + Samsung Ultra) | ✅ |
+| Hỗ trợ AI | 15 SP (toàn bộ điện thoại) | ✅ |
+| S Pen | 2 SP (S26 Ultra + S25 Ultra) | ✅ |
+| 5G | 15 SP (toàn bộ điện thoại) | ✅ |
+| Face ID + iOS | 5 SP (chỉ iPhone) | ✅ |
+| So sánh 3 SP | Hiển thị bảng side-by-side | ✅ |
+| Navbar hover delay | 350ms, không đóng khi di chuột vào panel | ✅ |
+

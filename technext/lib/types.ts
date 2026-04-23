@@ -5,16 +5,22 @@ export interface Product {
   price: number;
   originalPrice?: number;
   category: string;
+  brand?: string;
   description: string;
   image: string;
   rating: number;
   reviewCount: number;
   badge?: "new" | "sale" | "hot";
   variants: string[];
+  variantPrices: Record<string, number>;
   colors: string[];
+  colorImages: Record<string, string>;
   inStock: boolean;
   featured?: boolean;
   specs?: string;
+  detailedSpecs?: { label: string; value: string }[];
+  /** Tag-based features for filtering, e.g. ["5g","nfc","face-id","ip68","ai","s-pen","wireless-charge"] */
+  features?: string[];
 }
 
 export interface CartItem {

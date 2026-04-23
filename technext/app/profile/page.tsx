@@ -37,12 +37,15 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!isLoading && !user) router.push("/login");
+  }, [user, isLoading, router]);
+
+  useEffect(() => {
     if (user) {
       setName(user.name);
       setPhone(user.phone);
       if (user.shippingInfo) setShip(user.shippingInfo);
     }
-  }, [user, isLoading, router]);
+  }, [user]);
 
   if (isLoading || !user) return null;
 

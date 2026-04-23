@@ -30,7 +30,12 @@ export default function ProductDetailClient({
   const [addedMsg, setAddedMsg] = useState(false);
   const [imgErr, setImgErr] = useState(false);
 
-  const discount = calculateDiscount(product.price, product.originalPrice);
+  // Dynamic price based on selected variant
+  const displayPrice = product.variantPrices?.[selectedVariant] ?? product.price;
+  // Dynamic image based on selected color
+  const displayImage = product.colorImages?.[selectedColor] ?? product.image;
+
+  const discount = calculateDiscount(displayPrice, product.originalPrice);
   const related = getProductsByCategory(product.category)
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
@@ -127,8 +132,9 @@ export default function ProductDetailClient({
           )}
           {!imgErr ? (
             <Image
-              src={product.image}
-              alt={product.name}
+              key={displayImage}
+              src={displayImage}
+              alt={`${product.name} – ${selectedColor}`}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               style={{ objectFit: "contain", padding: "2rem" }}
@@ -212,9 +218,9 @@ export default function ProductDetailClient({
                 color: "var(--color-primary)",
               }}
             >
-              {formatPrice(product.price)}
+              {formatPrice(displayPrice)}
             </span>
-            {product.originalPrice && (
+            {product.originalPrice && displayPrice < product.originalPrice && (
               <>
                 <span
                   style={{
@@ -283,6 +289,11 @@ export default function ProductDetailClient({
                   }}
                 >
                   {v}
+                  {product.variantPrices?.[v] && v !== selectedVariant && (
+                    <span style={{ display: "block", fontSize: "0.72rem", color: "var(--color-text-muted)", fontWeight: 500 }}>
+                      {formatPrice(product.variantPrices[v])}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -537,30 +548,31 @@ export default function ProductDetailClient({
         )}
 
         {activeTab === "specs" && (
-          <div style={{ maxWidth: "600px" }}>
+          <div style={{ maxWidth: "700px" }}>
             <p style={{ fontSize: "0.88rem", color: "var(--color-text-muted)", marginBottom: "1rem" }}>
               Thông số kỹ thuật chi tiết của {product.name}
             </p>
-            {product.specs && (
-              <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                {product.specs.split(" | ").map((spec, i) => (
-                  <div key={i} style={{ display: "flex", padding: "0.7rem 0", borderBottom: "1px solid var(--color-border)" }}>
-                    <span style={{ fontWeight: 600, fontSize: "0.88rem", minWidth: "140px" }}>
-                      {i === 0 ? "Chip xử lý" : i === 1 ? "Màn hình" : i === 2 ? "Camera" : "Khác"}
-                    </span>
-                    <span style={{ color: "var(--color-text-muted)", fontSize: "0.88rem" }}>{spec.trim()}</span>
-                  </div>
-                ))}
-                <div style={{ display: "flex", padding: "0.7rem 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ fontWeight: 600, fontSize: "0.88rem", minWidth: "140px" }}>Phiên bản</span>
-                  <span style={{ color: "var(--color-text-muted)", fontSize: "0.88rem" }}>{product.variants.join(" / ")}</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+              {(product.detailedSpecs ?? (product.specs ? product.specs.split(" | ").map((v, i) => ({
+                label: i === 0 ? "Chip xử lý" : i === 1 ? "Màn hình" : i === 2 ? "Camera sau" : i === 3 ? "Camera trước" : "Hệ điều hành",
+                value: v.trim()
+              })) : [])).map((row, i) => (
+                <div key={i} style={{ display: "flex", padding: "0.65rem 0", borderBottom: "1px solid var(--color-border)", gap: "1rem" }}>
+                  <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>
+                    {row.label}
+                  </span>
+                  <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem", lineHeight: 1.6 }}>{row.value}</span>
                 </div>
-                <div style={{ display: "flex", padding: "0.7rem 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ fontWeight: 600, fontSize: "0.88rem", minWidth: "140px" }}>Màu sắc</span>
-                  <span style={{ color: "var(--color-text-muted)", fontSize: "0.88rem" }}>{product.colors.join(", ")}</span>
-                </div>
+              ))}
+              <div style={{ display: "flex", padding: "0.65rem 0", borderBottom: "1px solid var(--color-border)", gap: "1rem" }}>
+                <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>Phiên bản</span>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}>{product.variants.join(" / ")}</span>
               </div>
-            )}
+              <div style={{ display: "flex", padding: "0.65rem 0", borderBottom: "1px solid var(--color-border)", gap: "1rem" }}>
+                <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>Màu sắc</span>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}>{product.colors.join(", ")}</span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -653,16 +665,28 @@ export default function ProductDetailClient({
                   textDecoration: "none",
                   color: "var(--color-text)",
                   transition: "transform 0.2s",
+                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "2.5rem",
-                    textAlign: "center",
+                    position: "relative",
+                    width: "100%",
+                    aspectRatio: "1/1",
                     marginBottom: "0.75rem",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    background: "white",
                   }}
                 >
-                  {p.category === "tai-nghe" ? "🎧" : p.category === "tablet" ? "📲" : p.category === "phu-kien" ? "⌚" : "📱"}
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    fill
+                    sizes="220px"
+                    style={{ objectFit: "contain", padding: "0.5rem" }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  />
                 </div>
                 <h4
                   style={{
