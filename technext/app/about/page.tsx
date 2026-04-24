@@ -37,10 +37,12 @@ const TEAM = [
 ];
 
 const BRANDS = [
-  { name: "Apple",   logo: "/apple-logo.png",   bg: "#1A1A1A", filter: "invert(1)" },
-  { name: "Samsung", logo: "/samsung-logo.png", bg: "#1428A0", filter: "brightness(0) invert(1)" },
-  { name: "Xiaomi",  logo: "/xiaomi-logo.png",  bg: "#FF6900", filter: "brightness(0) invert(1)" },
+  { name: "Apple",   logo: "/APPLE.svg",   bg: "#1A1A1A", filter: "brightness(0) invert(1)" },
+  { name: "Samsung", logo: "/SAMSUNG.svg", bg: "#1428A0", filter: "brightness(0) invert(1)" },
+  { name: "Xiaomi",  logo: "/XIAOMI.png",  bg: "white", filter: "none" },
+
 ];
+
 
 /* ─── Page ─────────────────────────────────────────────────── */
 export default function AboutPage() {
@@ -229,9 +231,11 @@ export default function AboutPage() {
                     width:"42px", height:"42px", borderRadius:"10px",
                     background:b.bg, display:"flex", alignItems:"center", justifyContent:"center",
                     flexShrink:0,
+                    border: b.bg === "white" ? "1.5px solid rgba(255,103,0,0.3)" : "none",
+                    overflow: "hidden",
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={b.logo} alt={b.name} style={{ height:"22px", width:"auto", filter:b.filter, objectFit:"contain" }} />
+                    <img src={b.logo} alt={b.name} style={{ height: b.bg === "white" ? "34px" : "22px", width:"auto", filter:b.filter, objectFit:"contain" }} />
                   </div>
                   <div>
                     <p style={{ margin:0, fontWeight:700, fontSize:"0.9rem" }}>{b.name}</p>
@@ -369,36 +373,48 @@ export default function AboutPage() {
         {/* COMMITMENTS                                            */}
         {/* ══════════════════════════════════════════════════════ */}
         <section style={{ padding:"5rem 1.5rem", background:"white" }}>
-          <div style={{ maxWidth:"1000px", margin:"0 auto" }}>
+          <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
             <div style={{ textAlign:"center", marginBottom:"3rem" }}>
               <p style={{ margin:"0 0 0.6rem", fontSize:"0.72rem", fontWeight:700, letterSpacing:"0.12em", color:"#FF6700", textTransform:"uppercase" }}>Cam Kết</p>
               <h2 style={{ margin:0, fontSize:"clamp(1.8rem,4vw,2.4rem)", fontWeight:900, color:"#1A1A1A", letterSpacing:"-0.03em" }}>Chúng Tôi Hứa Với Bạn</h2>
+              <p style={{ margin:"0.75rem auto 0", maxWidth:"520px", fontSize:"0.9rem", color:"#6B7280", lineHeight:1.7 }}>
+                Mỗi đơn hàng tại TechNext đều đến kèm cam kết bảo vệ quyền lợi khách hàng toàn diện.
+              </p>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:"1rem" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"1.25rem" }}>
               {[
-                { icon:"🛡️", text:"Bảo hành 12–24 tháng chính hãng" },
-                { icon:"🔄", text:"1 đổi 1 trong 7 ngày nếu lỗi" },
-                { icon:"🚚", text:"Giao hàng miễn phí từ 300k" },
-                { icon:"💳", text:"Trả góp 0% qua thẻ tín dụng" },
-                { icon:"📞", text:"Hỗ trợ kỹ thuật 24/7" },
-                { icon:"📦", text:"Kho hàng TP.HCM, HN, ĐN" },
+                { icon:"🛡️", color:"#4F8EF7", bg:"#EEF4FF", title:"Bảo Hành 12–24 Tháng", desc:"Bảo hành chính hãng toàn quốc, hỗ trợ bảo hành tận nơi tại 3 miền." },
+                { icon:"🔄", color:"#22C55E", bg:"#EDFDF4", title:"Đổi Trả 7 Ngày",       desc:"1 đổi 1 miễn phí nếu lỗi nhà sản xuất trong vòng 7 ngày đầu." },
+                { icon:"🚚", color:"#FF6700", bg:"#FFF4EE", title:"Giao Hàng Miễn Phí",   desc:"Miễn phí giao hàng toàn quốc cho đơn từ 300.000₫ trở lên." },
+                { icon:"💳", color:"#EC4899", bg:"#FDF2F8", title:"Trả Góp 0% Lãi Suất",  desc:"Hỗ trợ trả góp 0% qua thẻ tín dụng, phân kỳ 3–24 tháng." },
+                { icon:"📞", color:"#8B5CF6", bg:"#F5F3FF", title:"Hỗ Trợ Kỹ Thuật 24/7", desc:"Đội ngũ kỹ thuật viên sẵn sàng hỗ trợ bạn bất kỳ lúc nào." },
+                { icon:"📦", color:"#F59E0B", bg:"#FFFBEB", title:"3 Kho Hàng Toàn Quốc", desc:"Kho hàng tại TP.HCM, Hà Nội và Đà Nẵng — giao hàng nhanh nhất." },
               ].map((c,i) => (
-                <div key={c.text} className="tn-card-hover" style={{
-                  display:"flex", flexDirection:"column", alignItems:"center", gap:"0.6rem",
-                  padding:"1.5rem 1rem",
-                  background:"#fafafa",
-                  borderRadius:"16px",
-                  border:"1px solid rgba(0,0,0,0.06)",
-                  textAlign:"center",
+                <div key={c.title} className="tn-card-hover" style={{
+                  display:"flex", alignItems:"flex-start", gap:"1rem",
+                  padding:"1.6rem 1.4rem",
+                  background:"white",
+                  borderRadius:"18px",
+                  border:`1px solid ${c.color}22`,
+                  boxShadow:"0 2px 12px rgba(0,0,0,0.05)",
                   animation:`fadeUp 0.5s ${i*0.08}s ease both`,
+                  transition:"transform 0.22s ease, box-shadow 0.22s ease",
                 }}>
-                  <span style={{ fontSize:"1.8rem" }}>{c.icon}</span>
-                  <span style={{ fontSize:"0.82rem", fontWeight:600, color:"#1A1A1A", lineHeight:1.5 }}>{c.text}</span>
+                  <div style={{
+                    width:"52px", height:"52px", borderRadius:"14px",
+                    background:c.bg, display:"flex", alignItems:"center",
+                    justifyContent:"center", fontSize:"1.7rem", flexShrink:0,
+                  }}>{c.icon}</div>
+                  <div>
+                    <p style={{ margin:"0 0 0.3rem", fontSize:"0.93rem", fontWeight:700, color:"#1A1A1A", lineHeight:1.3 }}>{c.title}</p>
+                    <p style={{ margin:0, fontSize:"0.78rem", color:"#6B7280", lineHeight:1.6 }}>{c.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
+
 
         {/* ══════════════════════════════════════════════════════ */}
         {/* CTA                                                    */}

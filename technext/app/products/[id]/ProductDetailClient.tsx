@@ -103,10 +103,38 @@ export default function ProductDetailClient({
   // Dynamic price based on selected variant
   const displayPrice = product.variantPrices?.[selectedVariant] ?? product.price;
 
+  /**
+   * Merge base detailedSpecs with per-variant overrides.
+   * Override rows replace matching labels; new labels are appended.
+   */
+  const displayedSpecs = (() => {
+    const base = product.detailedSpecs ?? [];
+    const overrides = product.variantSpecs?.[selectedVariant];
+    if (!overrides || overrides.length === 0) return base;
+    // Build a label → value map from overrides
+    const overrideMap = new Map(overrides.map(r => [r.label, r.value]));
+    // Replace matching labels in base; preserve order
+    const merged = base.map(row =>
+      overrideMap.has(row.label) ? { label: row.label, value: overrideMap.get(row.label)! } : row
+    );
+    // Append any override labels not already in base
+    overrides.forEach(r => {
+      if (!base.some(b => b.label === r.label)) merged.push(r);
+    });
+    return merged;
+  })();
+
   const discount = calculateDiscount(displayPrice, product.originalPrice);
   const related = getProductsByCategory(product.category)
     .filter((p) => p.id !== product.id)
+    // Same brand first, then other brands
+    .sort((a, b) => {
+      const aSame = (a.brand ?? "") === (product.brand ?? "") ? 0 : 1;
+      const bSame = (b.brand ?? "") === (product.brand ?? "") ? 0 : 1;
+      return aSame - bSame;
+    })
     .slice(0, 4);
+
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
@@ -846,17 +874,64 @@ export default function ProductDetailClient({
               maxWidth: "800px",
             }}
           >
-            <p>{product.description}</p>
+            {/* Short intro */}
+            <p style={{ marginBottom: "1rem" }}>{product.description}</p>
+
+            {/* Feature highlights */}
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--color-text)", marginBottom: "0.6rem" }}>
+              ✨ Tính năng nổi bật
+            </h3>
+            <ul style={{ paddingLeft: "1.25rem", marginBottom: "1.25rem", lineHeight: 2 }}>
+              {product.detailedSpecs
+                ? product.detailedSpecs.slice(0, 5).map((row, i) => (
+                    <li key={i}>
+                      <strong style={{ color: "var(--color-text)" }}>{row.label}:</strong>{" "}
+                      {row.value}
+                    </li>
+                  ))
+                : product.specs?.split(" | ").map((s, i) => (
+                    <li key={i}>{s.trim()}</li>
+                  ))
+              }
+            </ul>
+
+            {/* Variants info */}
+            {product.variants.length > 0 && (
+              <div style={{
+                background: "var(--color-muted)", borderRadius: "12px",
+                padding: "0.9rem 1.1rem", marginBottom: "0.5rem",
+              }}>
+                <p style={{ fontWeight: 700, fontSize: "0.88rem", color: "var(--color-text)", margin: "0 0 0.3rem" }}>
+                  📦 Phé biẻn có sẵn
+                </p>
+                <p style={{ margin: 0, fontSize: "0.85rem" }}>
+                  {product.variants.join("  •  ")}
+                </p>
+              </div>
+            )}
           </div>
         )}
 
         {activeTab === "specs" && (
           <div style={{ maxWidth: "700px" }}>
-            <p style={{ fontSize: "0.88rem", color: "var(--color-text-muted)", marginBottom: "1rem" }}>
-              Thông số kỹ thuật chi tiết của {product.name}
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+              <p style={{ fontSize: "0.88rem", color: "var(--color-text-muted)", margin: 0 }}>
+                Thông số kỹ thuật chi tiết của {product.name}
+              </p>
+              {product.variantSpecs && (
+                <span style={{
+                  background: "var(--color-primary-light)",
+                  color: "var(--color-primary-dark)",
+                  fontSize: "0.72rem", fontWeight: 700,
+                  padding: "0.2rem 0.65rem", borderRadius: "999px",
+                  flexShrink: 0,
+                }}>
+                  ✅ Hiển thị theo phiên bản: {selectedVariant}
+                </span>
+              )}
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-              {(product.detailedSpecs ?? (product.specs ? product.specs.split(" | ").map((v, i) => ({
+              {(displayedSpecs.length > 0 ? displayedSpecs : (product.specs ? product.specs.split(" | ").map((v, i) => ({
                 label: i === 0 ? "Chip xử lý" : i === 1 ? "Màn hình" : i === 2 ? "Camera sau" : i === 3 ? "Camera trước" : "Hệ điều hành",
                 value: v.trim()
               })) : [])).map((row, i) => (
@@ -864,12 +939,14 @@ export default function ProductDetailClient({
                   <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>
                     {row.label}
                   </span>
-                  <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem", lineHeight: 1.6 }}>{row.value}</span>
+                  <span style={{ color: "var(--color-primary)", fontSize: "0.85rem", lineHeight: 1.6, wordBreak: "break-word", flex: 1 }}>{row.value}</span>
                 </div>
               ))}
               <div style={{ display: "flex", padding: "0.65rem 0", borderBottom: "1px solid var(--color-border)", gap: "1rem" }}>
-                <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>Phiên bản</span>
-                <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}>{product.variants.join(" / ")}</span>
+                <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>Phương thức</span>
+                <span style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}>
+                  {selectedVariant}
+                </span>
               </div>
               <div style={{ display: "flex", padding: "0.65rem 0", borderBottom: "1px solid var(--color-border)", gap: "1rem" }}>
                 <span style={{ fontWeight: 600, fontSize: "0.85rem", minWidth: "160px", flexShrink: 0, color: "var(--color-text)" }}>Màu sắc</span>

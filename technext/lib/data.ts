@@ -581,19 +581,62 @@ export const products: Product[] = [
       "Đen Không Gian":"/images/products/ipad-pro-m5/den_khong_gian.jpg",
     },
     inStock: true, featured: true,
-    specs: "Apple M5 | 13\" OLED 120Hz | Wi-Fi 7 | USB-C 4 | Apple Pencil Pro",
+    specs: "Apple M5 | 11\"-13\" OLED 120Hz | Wi-Fi 7 | USB-C 4 | Apple Pencil Pro",
     detailedSpecs: DS(
-      ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 32GB RAM"],
-      ["Màn hình", "13\" Ultra Retina XDR OLED Tandem 2752×2064 120Hz ProMotion, nit: 1000 SDR, 1600 HDR"],
+      ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB/32GB RAM"],
+      ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
       ["Camera sau", "12MP Wide f/1.8 Center Stage, 10MP Ultra Wide"],
       ["Camera trước", "12MP Ultra Wide f/2.4 Center Stage, Landscape"],
       ["Kết nối", "Wi-Fi 7, Bluetooth 6.0, USB-C 4 (Thunderbolt 4), 5G (bản 5G)"],
       ["Hệ điều hành", "iPadOS 18"],
-      ["Bú		", "Apple Pencil Pro (hỗ trợ), Apple Pencil USB-C"],
+      ["Bút", "Apple Pencil Pro (hỗ trợ), Apple Pencil USB-C"],
       ["Bàn phím", "Magic Keyboard cho iPad Pro M5, Smart Keyboard Folio"],
-      ["Kích thước 13\"\t", "281.6×215.5×5.1mm | 579g (Wi-Fi)"],
+      ["Kích thước", "247.6×179.5×5.1mm | 444g (Wi-Fi)"],
       ["Màu sắc", "Bạc, Đen Không Gian"]
     ),
+    variantSpecs: {
+      /* ── 11\" variants ─────────────────────────── */
+      "Wi-Fi 256GB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 444g (Wi-Fi)"]
+      ),
+      "Wi-Fi 512GB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 444g (Wi-Fi)"]
+      ),
+      "Wi-Fi 1TB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 32GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 444g (Wi-Fi)"]
+      ),
+      "Wi-Fi 2TB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 32GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 444g (Wi-Fi)"]
+      ),
+      "5G 256GB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 460g (5G)"]
+      ),
+      "5G 512GB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 460g (5G)"]
+      ),
+      "5G 1TB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 32GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 460g (5G)"]
+      ),
+      "5G 2TB": DS(
+        ["Màn hình", "11\" Ultra Retina XDR OLED Tandem 2420×1668 264ppi 120Hz ProMotion, 1000nit SDR, 1600nit HDR"],
+        ["Chip xử lý", "Apple M5 (3nm) – 10 nhân CPU, 10 nhân GPU, 32GB RAM"],
+        ["Kích thước", "247.6×179.5×5.1mm | 460g (5G)"]
+      ),
+    },
     videos: [
       "/videos/ipad-pro-m5/video1.mp4",
       "/videos/ipad-pro-m5/video2.mp4",
@@ -626,19 +669,62 @@ export const products: Product[] = [
       "Xanh Không Gian":"/images/products/ipad-air-m4/xanh_khong_gian.jpg",
     },
     inStock: true, featured: true,
-    specs: "Apple M4 | 11\" Liquid Retina | 12GB RAM | Apple Pencil Pro | iPadOS 26",
+    specs: "Apple M4 | 11\"-13\" Liquid Retina | 8GB/16GB RAM | Apple Pencil Pro | iPadOS 26",
     detailedSpecs: DS(
-      ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 12GB RAM"],
-      ["Màn hình 11\"\t", "11\" Liquid Retina 2360×1640 264ppi 60Hz True Tone P3"],
-      ["Màn hình 13\"\t", "13\" Liquid Retina 2732×2048 264ppi 60Hz True Tone P3"],
+      ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 8GB RAM"],
+      ["Màn hình", "11\" Liquid Retina 2360×1640 264ppi 60Hz True Tone P3"],
       ["Camera sau", "12MP Wide f/1.8 Center Stage"],
       ["Camera trước", "12MP Ultra Wide f/2.4 Center Stage, Landscape"],
       ["Kết nối", "Wi-Fi 6E, Bluetooth 5.3, USB-C 3 (10Gbps), 5G (bản 5G)"],
       ["Hệ điều hành", "iPadOS 26"],
-      ["Bú t", "Apple Pencil Pro, Apple Pencil USB-C"],
-      ["Kích thước 11\"\t", "247.6×178.5×6.1mm | 461g"],
+      ["Bút", "Apple Pencil Pro, Apple Pencil USB-C"],
+      ["Kích thước", "247.6×178.5×6.1mm | 461g (Wi-Fi)"],
       ["Màu sắc", "Ánh Sao, Tím, Xanh Dương, Xanh Không Gian"]
     ),
+    variantSpecs: {
+      /* ── 11\" variants ─────────────────────────── */
+      "11\" Wi-Fi 128GB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 8GB RAM"],
+        ["Màn hình", "11\" Liquid Retina 2360×1640 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "247.6×178.5×6.1mm | 461g (Wi-Fi)"]
+      ),
+      "11\" Wi-Fi 256GB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 8GB RAM"],
+        ["Màn hình", "11\" Liquid Retina 2360×1640 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "247.6×178.5×6.1mm | 461g (Wi-Fi)"]
+      ),
+      "11\" Wi-Fi 512GB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 8GB RAM"],
+        ["Màn hình", "11\" Liquid Retina 2360×1640 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "247.6×178.5×6.1mm | 461g (Wi-Fi)"]
+      ),
+      "11\" Wi-Fi 1TB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 8GB RAM"],
+        ["Màn hình", "11\" Liquid Retina 2360×1640 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "247.6×178.5×6.1mm | 461g (Wi-Fi)"]
+      ),
+      /* ── 13\" variants ─────────────────────────── */
+      "13\" Wi-Fi 128GB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Màn hình", "13\" Liquid Retina 2732×2048 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "281.6×214.9×6.1mm | 617g (Wi-Fi)"]
+      ),
+      "13\" Wi-Fi 256GB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Màn hình", "13\" Liquid Retina 2732×2048 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "281.6×214.9×6.1mm | 617g (Wi-Fi)"]
+      ),
+      "13\" Wi-Fi 512GB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Màn hình", "13\" Liquid Retina 2732×2048 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "281.6×214.9×6.1mm | 617g (Wi-Fi)"]
+      ),
+      "13\" Wi-Fi 1TB": DS(
+        ["Chip xử lý", "Apple M4 (3nm) – 10 nhân CPU, 10 nhân GPU, 16GB RAM"],
+        ["Màn hình", "13\" Liquid Retina 2732×2048 264ppi 60Hz True Tone P3"],
+        ["Kích thước", "281.6×214.9×6.1mm | 617g (Wi-Fi)"]
+      ),
+    },
   },
   {
     id: 18, name: "iPad Gen 11 (2025)", slug: "ipad-gen-11",
@@ -923,10 +1009,21 @@ export const getProductsByCategory = (category: string) =>
 export const getFeaturedProducts = () => products.filter(p => p.featured);
 export const searchProducts = (query: string) => {
   const q = query.toLowerCase();
-  return products.filter(p =>
+  const matched = products.filter(p =>
     p.name.toLowerCase().includes(q) ||
+    (p.brand ?? "").toLowerCase().includes(q) ||
     p.description.toLowerCase().includes(q) ||
     p.category.toLowerCase().includes(q) ||
     (p.specs && p.specs.toLowerCase().includes(q))
   );
+  // Sort by relevance: name/brand prefix match → name contains → rest
+  return matched.sort((a, b) => {
+    const aNameStart = a.name.toLowerCase().startsWith(q) ? 0 : a.name.toLowerCase().includes(q) ? 1 : 2;
+    const bNameStart = b.name.toLowerCase().startsWith(q) ? 0 : b.name.toLowerCase().includes(q) ? 1 : 2;
+    const aBrand = (a.brand ?? "").toLowerCase().startsWith(q) ? -1 : 0;
+    const bBrand = (b.brand ?? "").toLowerCase().startsWith(q) ? -1 : 0;
+    const aScore = Math.min(aNameStart, aBrand === -1 ? 0 : 3);
+    const bScore = Math.min(bNameStart, bBrand === -1 ? 0 : 3);
+    return aScore - bScore;
+  });
 };
