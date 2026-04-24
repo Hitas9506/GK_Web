@@ -13,7 +13,6 @@ export default function Footer() {
     ],
     "Hỗ Trợ": [
       { label: "Chính Sách Đổi Trả", href: "/chinh-sach-doi-tra" },
-      { label: "So Sánh Điện Thoại", href: "/so-sanh-dien-thoai" },
       { label: "Liên Hệ", href: "/lien-he" },
       { label: "Giới Thiệu", href: "/about" },
     ],
@@ -24,6 +23,7 @@ export default function Footer() {
       { label: "⏰ T2 – CN: 8:00 – 22:00", href: "#" },
     ],
   };
+
 
   return (
     <footer
