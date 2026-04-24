@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
+import { getColorHex, isLightColor } from "@/lib/colorMap";
+import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
 import type { Order, ShippingInfo } from "@/lib/types";
 import ShippingForm from "@/components/ShippingForm";
@@ -123,7 +124,21 @@ export default function CartPage() {
               </div>
               <div style={{ flex: 1 }}>
                 <Link href={`/products/${item.product.id}`} style={{ textDecoration: "none", color: "var(--color-text)", fontWeight: 600, fontSize: "0.95rem", display: "block", marginBottom: "0.25rem" }}>{item.product.name}</Link>
-                <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", margin: "0 0 0.75rem" }}>Phiên bản: {item.variant} • Màu: {item.color}</p>
+                <p style={{ fontSize: "0.78rem", color: "var(--color-text-muted)", margin: "0 0 0.75rem", display: "flex", alignItems: "center", gap: "4px", flexWrap: "wrap" }}>
+                  Phiên bản: {item.variant} •
+                  <span
+                    title={item.color}
+                    style={{
+                      display: "inline-block",
+                      width: "11px", height: "11px",
+                      borderRadius: "50%",
+                      background: getColorHex(item.color),
+                      border: isLightColor(getColorHex(item.color)) ? "1.5px solid rgba(0,0,0,0.2)" : "1.5px solid transparent",
+                      flexShrink: 0,
+                    }}
+                  />
+                  {item.color}
+                </p>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                   <div style={{ display: "flex", border: "1px solid var(--color-border)", borderRadius: "8px", overflow: "hidden" }}>
                     <button onClick={() => updateQuantity(item.product.id, item.variant, item.color, item.quantity - 1)} style={{ width: "32px", height: "32px", border: "none", background: "var(--color-muted)", cursor: "pointer", fontWeight: 700 }}>−</button>

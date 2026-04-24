@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/lib/data";
 import type { Product } from "@/lib/types";
+import { getColorHex, isLightColor } from "@/lib/colorMap";
 
 /* ─── Brand config ───────────────────────────────────────── */
 const BRANDS = [
@@ -106,17 +107,26 @@ function ProductCard({
         )}
       </div>
 
-      {/* Color swatches */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "6px", paddingTop: "10px", flexWrap: "wrap", padding: "10px 12px 0" }}>
-        {product.colors.map((c) => (
-          <span key={c} title={c} style={{
-            fontSize: "0.6rem", fontWeight: 600,
-            padding: "0.1rem 0.4rem", borderRadius: "10px",
-            background: "var(--color-muted)",
-            color: "var(--color-text-muted)",
-            whiteSpace: "nowrap",
-          }}>{c}</span>
-        ))}
+      {/* Color swatches — dot circles */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5px", padding: "10px 14px 0", flexWrap: "wrap" }}>
+        {product.colors.map((c) => {
+          const hex = getColorHex(c);
+          const light = isLightColor(hex);
+          return (
+            <span
+              key={c}
+              title={c}
+              style={{
+                display: "inline-block",
+                width: "13px", height: "13px",
+                borderRadius: "50%",
+                background: hex,
+                border: light ? "1.5px solid rgba(0,0,0,0.18)" : "1.5px solid transparent",
+                flexShrink: 0,
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Text */}

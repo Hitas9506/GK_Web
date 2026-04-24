@@ -21,6 +21,8 @@ export interface Product {
   detailedSpecs?: { label: string; value: string }[];
   /** Tag-based features for filtering, e.g. ["5g","nfc","face-id","ip68","ai","s-pen","wireless-charge"] */
   features?: string[];
+  /** Optional product showcase videos (paths relative to /public, e.g. /videos/iphone-17-pro-max/video1.mp4) */
+  videos?: string[];
 }
 
 export interface CartItem {

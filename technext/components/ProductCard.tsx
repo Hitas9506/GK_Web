@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/lib/types";
 import { formatPrice, calculateDiscount } from "@/lib/utils";
+import { getColorHex, isLightColor } from "@/lib/colorMap";
 
 const CATEGORY_LABELS: Record<string, string> = {
   "dien-thoai": "Điện Thoại",
@@ -208,6 +209,30 @@ export default function ProductCard({ product }: { product: Product }) {
             ({product.reviewCount.toLocaleString("vi-VN")})
           </span>
         </div>
+
+        {/* Color swatches */}
+        {product.colors.length > 0 && (
+          <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "0.5rem", flexWrap: "wrap" }}>
+            {product.colors.map((c) => {
+              const hex = getColorHex(c);
+              const light = isLightColor(hex);
+              return (
+                <span
+                  key={c}
+                  title={c}
+                  style={{
+                    display: "inline-block",
+                    width: "12px", height: "12px",
+                    borderRadius: "50%",
+                    background: hex,
+                    border: light ? "1.5px solid rgba(0,0,0,0.18)" : "1.5px solid transparent",
+                    flexShrink: 0,
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
 
         {/* Price */}
         <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>

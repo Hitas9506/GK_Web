@@ -47,6 +47,11 @@ export const products: Product[] = [
       ["Màu sắc", "Cam Vũ Trụ, Xanh Đậm, Bạc"]
     ),
     features: ["face-id", "ip68", "5g", "nfc", "ai", "magsafe"],
+    videos: [
+      "/videos/iphone-17-pro-max/video1.mp4",
+      "/videos/iphone-17-pro-max/video2.mp4",
+      "/videos/iphone-17-pro-max/video3.mp4",
+    ],
   },
   {
     id: 2, name: "iPhone 17 Pro", slug: "iphone-17-pro",
@@ -256,6 +261,11 @@ export const products: Product[] = [
       ["Kích thước", "161.4×75.9×8.4mm | 224g"]
     ),
     features: ["5g", "nfc", "ai", "ip68"],
+    videos: [
+      "/videos/xiaomi-17-ultra/video1.mp4",
+      "/videos/xiaomi-17-ultra/video2.mp4",
+      "/videos/xiaomi-17-ultra/video3.mp4",
+    ],
   },
   {
     id: 8, name: "Xiaomi 15", slug: "xiaomi-15",
@@ -360,6 +370,11 @@ export const products: Product[] = [
       ["Kích thước", "162.8×78.9×8.2mm | 218g"]
     ),
     features: ["5g", "nfc", "ai", "ip68", "s-pen"],
+    videos: [
+      "/videos/samsung-galaxy-s26-ultra/video1.mp4",
+      "/videos/samsung-galaxy-s26-ultra/video2.mp4",
+      "/videos/samsung-galaxy-s26-ultra/video3.mp4",
+    ],
   },
   {
     id: 11, name: "Samsung Galaxy S26+", slug: "samsung-galaxy-s26-plus",
@@ -579,6 +594,11 @@ export const products: Product[] = [
       ["Kích thước 13\"\t", "281.6×215.5×5.1mm | 579g (Wi-Fi)"],
       ["Màu sắc", "Bạc, Đen Không Gian"]
     ),
+    videos: [
+      "/videos/ipad-pro-m5/video1.mp4",
+      "/videos/ipad-pro-m5/video2.mp4",
+      "/videos/ipad-pro-m5/video3.mp4",
+    ],
   },
   {
     id: 17, name: "iPad Air M4", slug: "ipad-air-m4",
