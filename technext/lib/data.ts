@@ -725,6 +725,16 @@ export const products: Product[] = [
         ["Kích thước", "281.6×214.9×6.1mm | 617g (Wi-Fi)"]
       ),
     },
+    variantDescriptions: {
+      "11\" Wi-Fi 128GB": "iPad Air M4 11\" – chip M4 10 nhân, Liquid Retina 11\" 2360×1640 264ppi, 8GB RAM, 128GB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Nhỏ gọn, siêu mỏng 6.1mm, nặng chỉ 461g.",
+      "11\" Wi-Fi 256GB": "iPad Air M4 11\" – chip M4 10 nhân, Liquid Retina 11\" 2360×1640 264ppi, 8GB RAM, 256GB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Nhỏ gọn, siêu mỏng 6.1mm, nặng chỉ 461g.",
+      "11\" Wi-Fi 512GB": "iPad Air M4 11\" – chip M4 10 nhân, Liquid Retina 11\" 2360×1640 264ppi, 8GB RAM, 512GB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Nhỏ gọn, siêu mỏng 6.1mm, nặng chỉ 461g.",
+      "11\" Wi-Fi 1TB":   "iPad Air M4 11\" – chip M4 10 nhân, Liquid Retina 11\" 2360×1640 264ppi, 8GB RAM, 1TB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Nhỏ gọn, siêu mỏng 6.1mm, nặng chỉ 461g.",
+      "13\" Wi-Fi 128GB": "iPad Air M4 13\" – chip M4 10 nhân, Liquid Retina 13\" 2732×2048 264ppi rộng hơn, 16GB RAM, 128GB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Màn hình lớn cho công việc, nặng 617g.",
+      "13\" Wi-Fi 256GB": "iPad Air M4 13\" – chip M4 10 nhân, Liquid Retina 13\" 2732×2048 264ppi rộng hơn, 16GB RAM, 256GB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Màn hình lớn cho công việc, nặng 617g.",
+      "13\" Wi-Fi 512GB": "iPad Air M4 13\" – chip M4 10 nhân, Liquid Retina 13\" 2732×2048 264ppi rộng hơn, 16GB RAM, 512GB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Màn hình lớn cho công việc, nặng 617g.",
+      "13\" Wi-Fi 1TB":   "iPad Air M4 13\" – chip M4 10 nhân, Liquid Retina 13\" 2732×2048 264ppi rộng hơn, 16GB RAM, 1TB, camera 12MP+12MP Center Stage, Apple Pencil Pro, iPadOS 26. Màn hình lớn cho công việc, nặng 617g.",
+    },
   },
   {
     id: 18, name: "iPad Gen 11 (2025)", slug: "ipad-gen-11",
@@ -1017,8 +1027,6 @@ export const categories: Category[] = [
   { id: "all",        name: "Tất Cả",        icon: "🏪", count: products.length },
   { id: "dien-thoai", name: "Điện Thoại",    icon: "📱", count: products.filter(p => p.category === "dien-thoai").length },
   { id: "tablet",     name: "Máy Tính Bảng", icon: "📲", count: products.filter(p => p.category === "tablet").length },
-  { id: "tai-nghe",   name: "Tai Nghe",      icon: "🎧", count: 0 },
-  { id: "phu-kien",   name: "Phụ Kiện",      icon: "⌚", count: 0 },
 ];
 
 /* ── Helper functions ────────────────────────────────────── */

@@ -6,6 +6,8 @@ import { products } from "@/lib/data";
 import type { Product } from "@/lib/types";
 import { getColorHex, isLightColor } from "@/lib/colorMap";
 import { useCompare } from "@/context/CompareContext";
+import { useState } from "react";
+import QuickBuyModal from "@/components/QuickBuyModal";
 
 
 /* ─── Brand config ───────────────────────────────────────── */
@@ -82,6 +84,7 @@ function ProductCard({
   compareDisabled: boolean;
 
 }) {
+  const [showQuickBuy, setShowQuickBuy] = useState(false);
   return (
     <div className="feat-card" style={{
       background: "white",
@@ -189,25 +192,39 @@ function ProductCard({
         {/* CTAs */}
         <div style={{
           display: "flex", alignItems: "center",
-          gap: "1.2rem", marginTop: "0.6rem",
+          gap: "0.75rem", marginTop: "0.6rem",
           flexWrap: "wrap", justifyContent: "center",
+          width: "100%",
         }}>
           <Link href={`/products/${product.id}`} className="feat-cta-primary" style={{
             background: brandColor, color: "white",
             fontSize: "0.8rem", fontWeight: 600,
-            padding: "0.48rem 1.2rem", borderRadius: "30px",
+            padding: "0.48rem 1.1rem", borderRadius: "30px",
             textDecoration: "none", whiteSpace: "nowrap",
           }}>
             Tìm hiểu thêm
           </Link>
-          <Link href={`/products/${product.id}`} style={{
-            color: brandColor, fontSize: "0.8rem",
-            fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap",
-          }}>
-            Mua &rsaquo;
-          </Link>
+          <button
+            onClick={() => setShowQuickBuy(true)}
+            style={{
+              background: "var(--color-accent)", color: "white",
+              fontSize: "0.8rem", fontWeight: 700,
+              padding: "0.48rem 1.1rem", borderRadius: "30px",
+              border: "none", cursor: "pointer", fontFamily: "inherit",
+              whiteSpace: "nowrap", transition: "opacity 0.15s",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+          >
+            ⚡ Mua Ngay
+          </button>
         </div>
       </div>
+
+      {/* Quick buy modal */}
+      {showQuickBuy && (
+        <QuickBuyModal product={product} onClose={() => setShowQuickBuy(false)} />
+      )}
     </div>
   );
 }

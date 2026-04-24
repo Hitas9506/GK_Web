@@ -22,9 +22,9 @@ const FLASH_ITEMS = [
 
 /* ─── Partner brands ─────────────────────────────────────── */
 const BRANDS = [
-  { name: "Apple",   bgColor: "#1A1A1A", textColor: "white",   shadow: "rgba(0,0,0,0.3)",     logo: "/APPLE.svg",   logoFilter: "brightness(0) invert(1)", pillBg: "#1A1A1A", showName: true,  logoH: "32px" },
-  { name: "Samsung", bgColor: "#1428A0", textColor: "white",   shadow: "rgba(20,40,160,0.3)", logo: "/SAMSUNG.svg", logoFilter: "brightness(0) invert(1)", pillBg: "#1428A0", showName: false, logoH: "22px" },
-  { name: "Xiaomi",  bgColor: "#FF6900", textColor: "#FF6900", shadow: "rgba(255,105,0,0.25)", logo: "/XIAOMI.png",  logoFilter: "none",                   pillBg: "white",   showName: true,  logoH: "46px" },
+  { name: "Apple",   bgColor: "#1A1A1A", textColor: "white",   shadow: "rgba(0,0,0,0.3)",     logo: "/apple_logo.svg",   logoFilter: "brightness(0) invert(1)", pillBg: "#1A1A1A", showName: true,  logoH: "32px" },
+  { name: "Samsung", bgColor: "#1428A0", textColor: "white",   shadow: "rgba(20,40,160,0.3)", logo: "/samsung_logo.svg", logoFilter: "brightness(0) invert(1)", pillBg: "#1428A0", showName: false, logoH: "22px" },
+  { name: "Xiaomi",  bgColor: "#FF6900", textColor: "#FF6900", shadow: "rgba(255,105,0,0.25)", logo: "/xiaomi_logo.svg",  logoFilter: "none",                   pillBg: "white",   showName: true,  logoH: "46px" },
 ];
 
 /* ─── Testimonials ───────────────────────────────────────── */

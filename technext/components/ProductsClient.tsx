@@ -9,9 +9,9 @@ import { useCompare } from "@/context/CompareContext";
 
 /* ── Brand config ─────────────────────────── */
 const BRANDS = [
-  { key: "apple",   label: "Apple",   logo: "/APPLE.svg",   bg: "#1A1A1A" },
-  { key: "samsung", label: "Samsung", logo: "/SAMSUNG.svg", bg: "#1428A0" },
-  { key: "xiaomi",  label: "Xiaomi",  logo: "/XIAOMI.png",  bg: "#FF6900" },
+  { key: "apple",   label: "Apple",   logo: "/apple_logo.svg",   bg: "#1A1A1A" },
+  { key: "samsung", label: "Samsung", logo: "/samsung_logo.svg", bg: "#1428A0" },
+  { key: "xiaomi",  label: "Xiaomi",  logo: "/xiaomi_logo.svg",  bg: "#FF6900" },
 ];
 
 /* ── Price presets ────────────────────────── */

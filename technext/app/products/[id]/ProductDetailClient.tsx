@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -21,6 +22,7 @@ export default function ProductDetailClient({
   product: Product;
 }) {
   const { addItem } = useCart();
+  const router = useRouter();
 
   /* ── Gallery setup ─────────────────────────────────────────
      Build a unified media list: images first, then videos.
@@ -72,33 +74,8 @@ export default function ProductDetailClient({
   const nextImage = () =>
     switchImage((activeGalleryIdx + 1) % galleryItems.length);
 
-  /* ── Auto-advance slideshow ──────────────────────────────────
-     Images: advance after IMAGE_DURATION ms (fixed display time).
-     Videos: advance via onEnded on the <video> element.
-     Timer resets automatically when activeGalleryIdx changes
-     (user clicks thumbnail / arrow / color → new effect cycle).
-  ─────────────────────────────────────────────────────────── */
-  const IMAGE_DURATION = 4000; // 4 seconds per image
+  // Auto-advance slideshow removed — gallery is purely manual.
 
-  useEffect(() => {
-    const current = galleryItems[activeGalleryIdx];
-    // Videos are handled by onEnded — skip timer for them
-    if (!current || current.type === "video") return;
-
-    const timer = setTimeout(() => {
-      const nextIdx = (activeGalleryIdx + 1) % galleryItems.length;
-      setActiveGalleryIdx(nextIdx);
-      setImgErr(false);
-      // Sync color selector when advancing to an image
-      const nextItem = galleryItems[nextIdx];
-      if (nextItem?.type === "image" && product.colors.includes(nextItem.label)) {
-        setSelectedColor(nextItem.label);
-      }
-    }, IMAGE_DURATION);
-
-    return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeGalleryIdx]);
 
   // Dynamic price based on selected variant
   const displayPrice = product.variantPrices?.[selectedVariant] ?? product.price;
@@ -748,6 +725,35 @@ export default function ProductDetailClient({
             >
               🛒 Thêm vào giỏ hàng
             </button>
+            <button
+              onClick={() => {
+                for (let i = 0; i < quantity; i++) {
+                  addItem(product, selectedVariant, selectedColor);
+                }
+                router.push("/cart");
+              }}
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                padding: "0.85rem",
+                fontSize: "0.95rem",
+                fontWeight: 700,
+                border: "2px solid var(--color-accent)",
+                background: "var(--color-accent)",
+                color: "white",
+                borderRadius: "12px",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                transition: "opacity 0.15s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = "0.88")}
+              onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+            >
+              ⚡ Mua Ngay
+            </button>
           </div>
 
           {/* Success message */}
@@ -875,23 +881,30 @@ export default function ProductDetailClient({
             }}
           >
             {/* Short intro */}
-            <p style={{ marginBottom: "1rem" }}>{product.description}</p>
+            <p style={{ marginBottom: "1rem" }}>
+              {(product.variantDescriptions?.[selectedVariant]) ?? product.description}
+            </p>
 
             {/* Feature highlights */}
             <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--color-text)", marginBottom: "0.6rem" }}>
               ✨ Tính năng nổi bật
             </h3>
             <ul style={{ paddingLeft: "1.25rem", marginBottom: "1.25rem", lineHeight: 2 }}>
-              {product.detailedSpecs
-                ? product.detailedSpecs.slice(0, 5).map((row, i) => (
+              {(displayedSpecs.length > 0 ? displayedSpecs : product.specs?.split(" | ").map((v, i) => ({ label: `spec${i}`, value: v.trim() })) ?? [])
+                .slice(0, 5)
+                .map((row, i) => {
+                  let displayVal = row.value;
+                  if (row.label === "RAM" || row.label === "RAM / ROM") {
+                    const ramMatch = row.value.match(/^(\d+(?:\.\d+)?GB)/i);
+                    if (ramMatch) displayVal = ramMatch[1];
+                  }
+                  return (
                     <li key={i}>
                       <strong style={{ color: "var(--color-text)" }}>{row.label}:</strong>{" "}
-                      {row.value}
+                      {displayVal}
                     </li>
-                  ))
-                : product.specs?.split(" | ").map((s, i) => (
-                    <li key={i}>{s.trim()}</li>
-                  ))
+                  );
+                })
               }
             </ul>
 
@@ -902,7 +915,7 @@ export default function ProductDetailClient({
                 padding: "0.9rem 1.1rem", marginBottom: "0.5rem",
               }}>
                 <p style={{ fontWeight: 700, fontSize: "0.88rem", color: "var(--color-text)", margin: "0 0 0.3rem" }}>
-                  📦 Phé biẻn có sẵn
+                  📦 Phiên bản có sẵn
                 </p>
                 <p style={{ margin: 0, fontSize: "0.85rem" }}>
                   {product.variants.join("  •  ")}

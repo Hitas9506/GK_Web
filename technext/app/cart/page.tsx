@@ -119,8 +119,14 @@ export default function CartPage() {
           {items.map((item) => (
             <div key={`${item.product.id}-${item.variant}-${item.color}`} style={{ background: "white", borderRadius: "16px", border: "1px solid var(--color-border)", padding: "1.25rem", display: "flex", gap: "1.25rem", alignItems: "center" }}>
               <div style={{ position: "relative", width: "90px", height: "110px", borderRadius: "12px", overflow: "hidden", flexShrink: 0, background: "var(--color-muted)" }}>
-                <Image src={item.product.image} alt={item.product.name} fill sizes="90px" style={{ objectFit: "contain", padding: "0.5rem" }}
-                  onError={(e) => { const t = e.currentTarget as HTMLImageElement; t.style.display = "none"; const p = t.parentElement; if (p) p.innerHTML += `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem">📱</div>`; }} />
+                <Image
+                  src={item.product.colorImages?.[item.color] ?? item.product.image}
+                  alt={`${item.product.name} – ${item.color}`}
+                  fill
+                  sizes="90px"
+                  style={{ objectFit: "contain", padding: "0.5rem" }}
+                  onError={(e) => { const t = e.currentTarget as HTMLImageElement; t.style.display = "none"; const p = t.parentElement; if (p) p.innerHTML += `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem">📱</div>`; }}
+                />
               </div>
               <div style={{ flex: 1 }}>
                 <Link href={`/products/${item.product.id}`} style={{ textDecoration: "none", color: "var(--color-text)", fontWeight: 600, fontSize: "0.95rem", display: "block", marginBottom: "0.25rem" }}>{item.product.name}</Link>
@@ -149,8 +155,15 @@ export default function CartPage() {
                 </div>
               </div>
               <div style={{ textAlign: "right", flexShrink: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: "1rem", color: "var(--color-primary)" }}>{formatPrice(item.product.price * item.quantity)}</p>
-                {item.quantity > 1 && <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{formatPrice(item.product.price)} / cái</p>}
+                {(() => {
+                  const unitPrice = item.product.variantPrices?.[item.variant] ?? item.product.price;
+                  return (
+                    <>
+                      <p style={{ fontWeight: 700, fontSize: "1rem", color: "var(--color-primary)" }}>{formatPrice(unitPrice * item.quantity)}</p>
+                      {item.quantity > 1 && <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{formatPrice(unitPrice)} / cái</p>}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           ))}

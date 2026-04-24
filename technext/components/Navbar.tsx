@@ -27,7 +27,7 @@ interface PhoneBrand {
 const PHONE_BRANDS: PhoneBrand[] = [
   {
     key: "apple", label: "Apple",
-    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/APPLE.svg",
+    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/apple_logo.svg",
     products: [
       { name: "iPhone 17 Pro Max", badge: "Mới", href: "/products/1",  desc: "Titanium · A19 Pro",   image: "/images/products/iphone-17-pro-max/cam_vu_tru.jpg" },
       { name: "iPhone 17 Pro",     badge: "Mới", href: "/products/2",  desc: "Camera Tele 5× Mới",  image: "/images/products/iphone-17-pro/cam_vu_tru.jpg" },
@@ -38,7 +38,7 @@ const PHONE_BRANDS: PhoneBrand[] = [
   },
   {
     key: "xiaomi", label: "Xiaomi",
-    accent: "#FF6900", logoText: "Mi", logoBg: "white", logoImg: "/XIAOMI.png",
+    accent: "#FF6900", logoText: "Mi", logoBg: "white", logoImg: "/xiaomi_logo.svg",
     products: [
       { name: "Xiaomi 17",       badge: "Mới", href: "/products/6",  desc: "SD 8 Elite Gen 5 · Leica",  image: "/images/products/xiaomi-17/den.png" },
       { name: "Xiaomi 17 Ultra", badge: "Mới", href: "/products/7",  desc: "Leica 200MP · Pin 6000mAh", image: "/images/products/xiaomi-17-ultra/den.png" },
@@ -49,7 +49,7 @@ const PHONE_BRANDS: PhoneBrand[] = [
   },
   {
     key: "samsung", label: "Samsung",
-    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/SAMSUNG.svg",
+    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/samsung_logo.svg",
     products: [
       { name: "Galaxy S26 Ultra", badge: "Mới", href: "/products/10", desc: "SD Elite Gen 5 · 200MP",    image: "/images/products/samsung-galaxy-s26-ultra/default_1_1.jpg" },
       { name: "Galaxy S26+",      badge: "Mới", href: "/products/11", desc: "Exynos 2600 · 6.7\"",        image: "/images/products/samsung-galaxy-s26-plus/den_classic.jpg" },
@@ -63,7 +63,7 @@ const PHONE_BRANDS: PhoneBrand[] = [
 const TABLET_BRANDS: PhoneBrand[] = [
   {
     key: "apple", label: "Apple",
-    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/APPLE.svg",
+    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/apple_logo.svg",
     products: [
       { name: "iPad Pro M5",       badge: "Mới",  href: "/products/16", desc: "M5 · OLED Ultra Retina XDR",  image: "/images/products/ipad-pro-m5/bac.jpg" },
       { name: "iPad Air M4",       badge: "Mới",  href: "/products/17", desc: "M4 · Liquid Retina 11\"",      image: "/images/products/ipad-air-m4/anh_sao.jpg" },
@@ -74,7 +74,7 @@ const TABLET_BRANDS: PhoneBrand[] = [
   },
   {
     key: "xiaomi", label: "Xiaomi",
-    accent: "#FF6900", logoText: "Mi", logoBg: "#FF6900", logoImg: "/XIAOMI.png",
+    accent: "#FF6900", logoText: "Mi", logoBg: "#FF6900", logoImg: "/xiaomi_logo.svg",
     products: [
       { name: "Xiaomi Pad 8 Pro", badge: "Mới",  href: "/products/20", desc: "SD 8 Elite · 3K 144Hz",    image: "/images/products/xiaomi-pad-8-pro/xanh_bien.png" },
       { name: "Xiaomi Pad 8",     badge: "Mới",  href: "/products/21", desc: "SD 8s Gen 4 · 144Hz",       image: "/images/products/xiaomi-pad-8/xanh_duong.png" },
@@ -85,7 +85,7 @@ const TABLET_BRANDS: PhoneBrand[] = [
   },
   {
     key: "samsung", label: "Samsung",
-    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/SAMSUNG.svg",
+    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/samsung_logo.svg",
     products: [
       { name: "Tab S11 Ultra 5G", badge: "Mới",  href: "/products/24", desc: "Dimensity 9400+ · 14.6\" AMOLED", image: "/images/products/samsung-tab-s11-ultra-5g/bac.png" },
       { name: "Tab S11 5G",       badge: "Mới",  href: "/products/25", desc: "Dimensity 9400+ · 11\" AMOLED",   image: "/images/products/samsung-tab-s11-5g/bac.png" },
@@ -99,7 +99,7 @@ const TABLET_BRANDS: PhoneBrand[] = [
 const HEADPHONE_BRANDS: PhoneBrand[] = [
   {
     key: "apple", label: "Apple",
-    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/APPLE.svg",
+    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/apple_logo.svg",
     products: [
       { name: "AirPods Pro 3",       badge: "Mới",  href: "/products?category=tai-nghe", desc: "ANC · H3 chip · Spatial Audio" },
       { name: "AirPods 4 (ANC)",     badge: "Mới",  href: "/products?category=tai-nghe", desc: "Chống ồn chủ động" },
@@ -110,7 +110,7 @@ const HEADPHONE_BRANDS: PhoneBrand[] = [
   },
   {
     key: "xiaomi", label: "Xiaomi",
-    accent: "#FF6900", logoText: "Mi", logoBg: "#FF6900", logoImg: "/XIAOMI.png",
+    accent: "#FF6900", logoText: "Mi", logoBg: "#FF6900", logoImg: "/xiaomi_logo.svg",
     products: [
       { name: "Xiaomi Buds 5 Pro",   badge: "Mới",  href: "/products?category=tai-nghe", desc: "ANC 55dB · LDAC · 36h" },
       { name: "Xiaomi Buds 5",       badge: "Mới",  href: "/products?category=tai-nghe", desc: "ANC · Spatial Audio · 42h" },
@@ -121,7 +121,7 @@ const HEADPHONE_BRANDS: PhoneBrand[] = [
   },
   {
     key: "samsung", label: "Samsung",
-    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/SAMSUNG.svg",
+    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/samsung_logo.svg",
     products: [
       { name: "Galaxy Buds 3 Pro",   badge: "Mới",  href: "/products?category=tai-nghe", desc: "ANC · Hi-Fi 24bit · IPX7" },
       { name: "Galaxy Buds 3",       badge: "Mới",  href: "/products?category=tai-nghe", desc: "Blade Antenna · ANC" },
@@ -135,7 +135,7 @@ const HEADPHONE_BRANDS: PhoneBrand[] = [
 const ACCESSORY_BRANDS: PhoneBrand[] = [
   {
     key: "apple", label: "Apple",
-    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/APPLE.svg",
+    accent: "#1A1A1A", logoText: "🍎", logoBg: "#1A1A1A", logoImg: "/apple_logo.svg",
     products: [
       { name: "Apple Watch Series 10",  badge: "Mới",  href: "/products?category=phu-kien", desc: "Mỏng nhất · watchOS 11" },
       { name: "Apple Watch Ultra 2",    badge: "Hot",  href: "/products?category=phu-kien", desc: "Titanium · Pin 60h" },
@@ -146,7 +146,7 @@ const ACCESSORY_BRANDS: PhoneBrand[] = [
   },
   {
     key: "xiaomi", label: "Xiaomi",
-    accent: "#FF6900", logoText: "Mi", logoBg: "#FF6900", logoImg: "/XIAOMI.png",
+    accent: "#FF6900", logoText: "Mi", logoBg: "#FF6900", logoImg: "/xiaomi_logo.svg",
     products: [
       { name: "Xiaomi Watch S4",         badge: "Mới",  href: "/products?category=phu-kien", desc: "AMOLED · GPS · 17 ngày pin" },
       { name: "Xiaomi Smart Band 9 Pro", badge: "Mới",  href: "/products?category=phu-kien", desc: "AMOLED · Sức khỏe 24/7" },
@@ -157,7 +157,7 @@ const ACCESSORY_BRANDS: PhoneBrand[] = [
   },
   {
     key: "samsung", label: "Samsung",
-    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/SAMSUNG.svg",
+    accent: "#1428A0", logoText: "S", logoBg: "#1428A0", logoImg: "/samsung_logo.svg",
     products: [
       { name: "Galaxy Watch 7",         badge: "Mới",  href: "/products?category=phu-kien", desc: "Exynos W1000 · BioActive 3" },
       { name: "Galaxy Ring",            badge: "Hot",  href: "/products?category=phu-kien", desc: "Theo dõi sức khỏe 24/7" },
@@ -279,29 +279,25 @@ const MEGA: Record<string, MegaMenu> = {
     explore: {
       heading: "Mua Sắm",
       links: [
-        { label: "Khám Phá Sản Phẩm Mới Nhất", href: "/products",                        featured: true },
-        { label: "Điện Thoại",                  href: "/products?category=dien-thoai" },
-        { label: "Máy Tính Bảng",               href: "/products?category=tablet" },
-        { label: "Phụ Kiện Công Nghệ",          href: "/products?category=phu-kien" },
-        { label: "Hàng Cũ / Like New",          href: "/products" },
+        { label: "Khám Phá Sản Phẩm Mới Nhất", href: "/products", featured: true },
+        { label: "Điện Thoại",    href: "/products?category=dien-thoai" },
+        { label: "Máy Tính Bảng", href: "/products?category=tablet" },
       ],
     },
     buy: {
       heading: "Thông Tin & Dịch Vụ",
       links: [
-        { label: "Giới Thiệu TechNext",    href: "/about", featured: true,
+        { label: "Giới Thiệu TechNext", href: "/about", featured: true,
           desc: "Thành lập 2020 tại TP.HCM · Đại lý chính hãng Apple, Samsung, Xiaomi · Hơn 10,000 khách hàng tin tưởng." },
-        { label: "Theo Dõi Đơn Hàng",     href: "/orders" },
-        { label: "Chính Sách Bảo Hành",   href: "/chinh-sach-doi-tra" },
-        { label: "Chương Trình Thu Cũ",   href: "/products" },
-        { label: "Hướng Dẫn Trả Góp",    href: "/products" },
+        { label: "Theo Dõi Đơn Hàng",  href: "/orders" },
+        { label: "Chính Sách Bảo Hành", href: "/chinh-sach-doi-tra" },
+        { label: "Liên Hệ Tư Vấn",     href: "/lien-he" },
       ],
     },
     learn: {
-      heading: "Ưu Đãi & Cộng Đồng",
+      heading: "Khác",
       links: [
-        { label: "Ưu Đãi Sinh Viên",       href: "/products" },
-        { label: "Flash Sale 🔥",          href: "/products" },
+        { label: "Flash Sale 🔥",           href: "/products" },
         { label: "Tin Công Nghệ / Blog",  href: "/about" },
       ],
     },
@@ -1174,9 +1170,9 @@ export default function Navbar() {
                             </svg>
                           ) : b.key === "xiaomi" ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src="/XIAOMI.png" alt="Xiaomi" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
+                            <img src="/xiaomi_logo.svg" alt="Xiaomi" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
                           ) : b.key === "samsung" ? (
-                            <Image src="/SAMSUNG.svg" alt="Samsung" width={52} height={16} style={{ filter: "brightness(0) invert(1)", objectFit: "contain" }} />
+                            <Image src="/samsung_logo.svg" alt="Samsung" width={52} height={16} style={{ filter: "brightness(0) invert(1)", objectFit: "contain" }} />
                           ) : (
                             <span style={{ fontSize: "0.72rem", fontWeight: 900, color: "white" }}>{b.logoText}</span>
                           )}

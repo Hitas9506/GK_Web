@@ -25,6 +25,11 @@ export interface Product {
    * Rows not listed here keep their default value from `detailedSpecs`.
    */
   variantSpecs?: Record<string, { label: string; value: string }[]>;
+  /**
+   * Per-variant description overrides. Key = variant string (must match `variants[]` exactly).
+   * When a variant is selected, this replaces the base `description` shown in the Mô Tả tab.
+   */
+  variantDescriptions?: Record<string, string>;
   /** Tag-based features for filtering, e.g. ["5g","nfc","face-id","ip68","ai","s-pen","wireless-charge"] */
   features?: string[];
   /** Optional product showcase videos (paths relative to /public, e.g. /videos/iphone-17-pro-max/video1.mp4) */

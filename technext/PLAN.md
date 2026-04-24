@@ -395,3 +395,107 @@ Nộp Bài      ░░░░░░░░░░░░░░░░░░░░   0
 | Auto-advance gallery sản phẩm | Đã tắt – gallery hoàn toàn manual | ✅ |
 | Variant-aware specs | Thay đổi đúng theo phiên bản chọn | ✅ |
 | Compare bar toàn trang | Hiện ở mọi trang qua CompareProvider | ✅ |
+
+---
+
+### 5.10 Rà Soát & Dọn Dẹp Toàn Bộ Code (Session 4)
+
+#### Logo Files
+- [x] **Xóa 3 logo cũ** khỏi `public/`: `APPLE.svg`, `SAMSUNG.svg`, `XIAOMI.png`
+- [x] **Xóa 3 bản sao** logo khỏi `e:\Web\GK_Web\` (ngoài project): `apple_logo.svg`, `samsung_logo.svg`, `xiaomi_logo.svg`
+- [x] **Giữ lại** 3 logo chính thức trong `public/`: `apple_logo.svg`, `samsung_logo.svg`, `xiaomi_logo.svg`
+
+#### Audit Kết Quả – Từng File
+| File | Vấn đề tìm thấy | Đã sửa |
+|---|---|---|
+| `components/ProductCard.tsx` | Không có lỗi | ✅ Sạch |
+| `components/FeaturedProducts.tsx` | Không có lỗi | ✅ Sạch |
+| `components/Footer.tsx` | Không có lỗi | ✅ Sạch |
+| `components/Navbar.tsx` | Fake links đã xóa trước đó | ✅ Sạch |
+| `components/ProductsClient.tsx` | Logo cũ `/APPLE.svg`, `/SAMSUNG.svg`, `/XIAOMI.png` | ✅ Đổi sang logo mới |
+| `context/CompareContext.tsx` | Không có lỗi | ✅ Sạch |
+| `context/CartContext.tsx` | Không có lỗi | ✅ Sạch |
+| `context/AuthContext.tsx` | Không có lỗi | ✅ Sạch |
+| `lib/types.ts` | Thêm `variantDescriptions` field | ✅ Cập nhật |
+| `lib/data.ts` | Sửa giá iPhone 17e 512GB (17.5M→29.7M) | ✅ Sửa |
+| `app/products/[id]/ProductDetailClient.tsx` | Auto-advance slideshow còn, "Phé biẻn" encoding | ✅ Sửa |
+
+#### TypeScript
+- [x] **0 errors** sau toàn bộ thay đổi (verified bằng `tsc --noEmit`)
+
+### 5.11 Đồng Bộ Thông Số & Mô Tả Theo Phiên Bản (Session 4)
+- [x] **[ProductDetailClient] "Tính năng nổi bật"** – Đổi từ `product.detailedSpecs` (static) sang `displayedSpecs` (variant-merged) → 13" hiện thông số 13"
+- [x] **[types.ts] `variantDescriptions`** – Thêm field `Record<string, string>` vào interface `Product`
+- [x] **[data.ts] iPad Air M4** – Thêm `variantDescriptions` cho cả 8 biến thể (11" vs 13" có mô tả khác nhau: RAM 8GB/16GB, màn 2360×1640 / 2732×2048, nặng 461g / 617g)
+- [x] **[ProductDetailClient] Mô tả sản phẩm** – Hiện `variantDescriptions[selectedVariant]` nếu có, fallback về `product.description`
+
+### 5.12 Tài Liệu (Session 4)
+- [x] **`README.md`** – Viết lại chi tiết: yêu cầu hệ thống, cài đặt từng bước, cấu trúc thư mục đầy đủ, tính năng chính, cấu trúc dữ liệu sản phẩm, tech stack, troubleshooting thường gặp
+- [x] **`PLAN.md`** – Cập nhật đầy đủ audit kết quả, các fix, tech notes
+
+### 5.13 Tổng Kết Trạng Thái Hiện Tại
+| Tính năng | Trạng thái |
+|---|---|
+| 25 sản phẩm · 5 danh mục (điện thoại + tablet) | ✅ Hoàn chỉnh |
+| Logo Apple/Samsung/Xiaomi đúng chỗ | ✅ 4 vị trí (Navbar, FeaturedProducts, ProductsClient, About) |
+| Variant-aware specs + description | ✅ iPad Air M4 đầy đủ |
+| Bộ lọc 10 chiều + popup | ✅ Hoạt động chính xác |
+| So sánh sản phẩm (global bar + trang compare) | ✅ Toàn trang |
+| Search autocomplete | ✅ Ảnh + tên + giá |
+| Mega-menu chỉ link thật | ✅ Không còn link ảo |
+| Gallery manual (không auto-advance) | ✅ |
+| TypeScript | ✅ 0 errors |
+| README.md hướng dẫn chi tiết | ✅ |
+
+---
+
+### 5.14 Nút "Mua Ngay" & QuickBuyModal (Session 4)
+- [x] **[NEW] `QuickBuyModal.tsx`** — Modal chọn phiên bản, màu sắc, số lượng → Mua ngay đến giỏ hàng
+  - Dùng `createPortal(document.body)` để escape parent transform (fix flicker)
+  - Body scroll lock khi modal mở
+  - SSR guard với `mounted` state
+- [x] **`ProductCard.tsx`** — Thêm nút ⚡ Mua Ngay dưới thẻ card → mở QuickBuyModal
+- [x] **`FeaturedProducts.tsx`** — Thay link "Mua ›" bằng nút ⚡ Mua Ngay → QuickBuyModal
+- [x] **`ProductDetailClient.tsx`** — Thêm nút ⚡ Mua Ngay bên cạnh 🛒 Thêm vào giỏ (direct, không modal)
+
+### 5.15 Giỏ Hàng — Đồng Bộ Hình & Giá Theo Variant (Session 4)
+- [x] **Cart image** — `colorImages[item.color]` thay vì `product.image` → hiện đúng màu
+- [x] **Cart line price** — `variantPrices[item.variant]` hiện đúng giá phiên bản
+- [x] **CartContext `totalPrice`** — Tổng tiền giờ tính đúng giá variant
+
+### 5.16 Rà Soát Cuối Cùng (Session 4 Final)
+
+#### Logo Paths — Đã sửa 100%
+| File | Số chỗ sửa |
+|---|---|
+| `Navbar.tsx` | 12 locations |
+| `app/page.tsx` | 3 locations |
+| `ProductsClient.tsx` | 3 locations |
+| `FeaturedProducts.tsx` | Đã đúng từ trước |
+
+#### Dọn Dẹp Dữ Liệu
+- [x] Xóa category `tai-nghe` và `phu-kien` khỏi `data.ts` (count: 0, không có sản phẩm)
+- [x] Giữ lại label mapping trong `ProductCard.tsx`, `ProductDetailClient.tsx`, `orders/page.tsx` vì chúng là fallback maps không gây lỗi
+
+#### Kết Quả
+- **TypeScript**: 0 errors
+- **Old logo refs**: 0 remaining
+- **Encoding bugs**: 0 remaining
+- **Stale categories**: removed
+- **QuickBuyModal flicker**: fixed with createPortal
+
+### 5.17 Tổng Kết Trạng Thái Cuối Cùng
+| Tính năng | Trạng thái |
+|---|---|
+| 25 sản phẩm (điện thoại + tablet) | ✅ |
+| Logo Apple/Samsung/Xiaomi đúng mọi chỗ | ✅ 5 files, 21+ locations |
+| Variant-aware specs + description + price | ✅ |
+| Nút ⚡ Mua Ngay mọi card + chi tiết | ✅ QuickBuyModal |
+| Giỏ hàng đồng bộ hình/giá variant | ✅ |
+| Bộ lọc 10 chiều + popup | ✅ |
+| So sánh sản phẩm global | ✅ |
+| Search autocomplete | ✅ |
+| Mega-menu chỉ link thật | ✅ |
+| Gallery manual | ✅ |
+| TypeScript 0 errors | ✅ |
+| README.md chi tiết | ✅ |

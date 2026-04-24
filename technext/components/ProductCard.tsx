@@ -8,6 +8,7 @@ import { useCompare } from "@/context/CompareContext";
 import type { Product } from "@/lib/types";
 import { formatPrice, calculateDiscount } from "@/lib/utils";
 import { getColorHex, isLightColor } from "@/lib/colorMap";
+import QuickBuyModal from "@/components/QuickBuyModal";
 
 const CATEGORY_LABELS: Record<string, string> = {
   "dien-thoai": "Điện Thoại",
@@ -27,6 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   const { add: addToCompare, remove: removeFromCompare, has: inCompare, items: compareItems } = useCompare();
   const [imgErr, setImgErr] = useState(false);
+  const [showQuickBuy, setShowQuickBuy] = useState(false);
   const discount = calculateDiscount(product.price, product.originalPrice);
   const emoji = CATEGORY_EMOJI[product.category] ?? "📱";
   const comparing = inCompare(product.id);
@@ -284,6 +286,40 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
         </div>
       </div>
+
+      {/* Mua ngay button */}
+      <div style={{ padding: "0 1rem 1rem" }}>
+        <button
+          id={`quick-buy-${product.id}`}
+          onClick={(e) => { e.preventDefault(); setShowQuickBuy(true); }}
+          style={{
+            width: "100%",
+            padding: "0.55rem",
+            borderRadius: "10px",
+            border: "none",
+            background: "var(--color-accent)",
+            color: "white",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+            cursor: "pointer",
+            fontFamily: "inherit",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.35rem",
+            transition: "opacity 0.15s",
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
+          onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+        >
+          ⚡ Mua Ngay
+        </button>
+      </div>
+
+      {/* Quick buy modal */}
+      {showQuickBuy && (
+        <QuickBuyModal product={product} onClose={() => setShowQuickBuy(false)} />
+      )}
 
       <style>{`
         .product-card:hover .quick-add-overlay {
