@@ -5,6 +5,7 @@ import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import { useCompare } from "@/context/CompareContext";
 
 /* ── Brand config ─────────────────────────── */
 const BRANDS = [
@@ -418,8 +419,15 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
   const [sortBy, setSortBy]     = useState("newest");
   const [filterOpen, setFilterOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [compareList, setCompareList] = useState<Product[]>([]);
+  const { add: addToCompare, remove: removeFromCompare, has: inCompare } = useCompare();
   const filterBtnRef = useRef<HTMLButtonElement>(null);
+
+  /* Sync state when URL params change (Server Component re-renders on navigation) */
+  useEffect(() => {
+    setCategory(defaultCategory ?? "all");
+    setF(prev => ({ ...defaultFilter(), brand: defaultBrand ?? prev.brand }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultCategory, defaultBrand]);
 
   const set = (patch: Partial<FilterState>) => setF(prev => ({ ...prev, ...patch }));
   const activeCount = useMemo(() => countActive(f), [f]);
@@ -477,14 +485,8 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
     return list;
   }, [allProducts, category, f, sortBy]);
 
-  /* ─── Compare ──────────────────────────── */
-  const toggleCompare = (product: Product) => {
-    setCompareList(prev => {
-      if (prev.some(p => p.id === product.id)) return prev.filter(p => p.id !== product.id);
-      if (prev.length >= 3) return prev;
-      return [...prev, product];
-    });
-  };
+  /* Compare handled globally by CompareContext/CompareProvider */
+
 
   const categories = [
     { id: "all",        label: "Tất Cả",        icon: "🏪" },
@@ -494,7 +496,7 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
 
   /* ─── Render ────────────────────────────── */
   return (
-    <div style={{ paddingBottom: compareList.length > 0 ? "76px" : "0" }}>
+    <div style={{ paddingBottom: "80px" }}>
 
       {/* HERO */}
       <div style={{
@@ -709,32 +711,9 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
               gridTemplateColumns: "repeat(auto-fill, minmax(218px, 1fr))",
               gap: "1.1rem",
             }}>
-              {filtered.map(p => {
-                const inCompare = compareList.some(c => c.id === p.id);
-                const compareDisabled = !inCompare && compareList.length >= 3;
-                return (
-                  <div key={p.id} style={{ position: "relative" }}>
-                    <ProductCard product={p} />
-                    <button
-                      onClick={() => !compareDisabled && toggleCompare(p)}
-                      title={compareDisabled ? "Chỉ so sánh tối đa 3 sản phẩm" : inCompare ? "Bỏ so sánh" : "So sánh"}
-                      style={{
-                        position: "absolute", top: "10px", left: "10px",
-                        padding: "0.28rem 0.5rem", borderRadius: "8px",
-                        border: inCompare ? "1.5px solid #FF6700" : "1.5px solid rgba(0,0,0,0.15)",
-                        background: inCompare ? "#FF6700" : "rgba(255,255,255,0.92)",
-                        color: inCompare ? "white" : "#666",
-                        fontSize: "0.63rem", fontWeight: 700,
-                        cursor: compareDisabled ? "not-allowed" : "pointer",
-                        opacity: compareDisabled ? 0.4 : 1,
-                        backdropFilter: "blur(4px)", transition: "all 0.15s", zIndex: 5,
-                        display: "flex", alignItems: "center", gap: "0.2rem",
-                      }}>
-                      ⚖️ {inCompare ? "✓" : "So sánh"}
-                    </button>
-                  </div>
-                );
-              })}
+              {filtered.map(p => (
+                <ProductCard key={p.id} product={p} />
+              ))}
             </div>
             <p style={{ textAlign: "center", marginTop: "2rem", color: "#bbb", fontSize: "0.8rem" }}>
               Hiển thị {filtered.length} sản phẩm
@@ -785,12 +764,7 @@ export default function ProductsClient({ allProducts, defaultCategory, defaultBr
         </div>
       )}
 
-      {/* COMPARE BAR */}
-      <CompareBar
-        items={compareList}
-        onRemove={id => setCompareList(prev => prev.filter(p => p.id !== id))}
-        onClear={() => setCompareList([])}
-      />
+      {/* Compare bar is now rendered globally by CompareProvider in layout */}
 
       <style>{`
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }

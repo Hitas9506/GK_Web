@@ -357,3 +357,41 @@ Nộp Bài      ░░░░░░░░░░░░░░░░░░░░   0
 | So sánh 3 SP | Hiển thị bảng side-by-side | ✅ |
 | Navbar hover delay | 350ms, không đóng khi di chuột vào panel | ✅ |
 
+---
+
+### 5.7 Global Compare + Logic Fixes (Session 3 – Lần 1)
+- [x] **[Context] `CompareContext.tsx`** – Tạo mới, quản lý global compare state (add/remove/has/clear, tối đa 3 SP)
+- [x] **[Layout] `CompareProvider`** tích hợp vào `app/layout.tsx` → Compare bar hiện ở **mọi trang**
+- [x] **[ProductCard] Nút ⚖️** thêm vào góc trên phải mỗi card – dùng `useCompare` hook toàn cục
+- [x] **[ProductsClient] Xóa local compare state** (`compareList`, `toggleCompare`, `CompareBar`) → dùng global `CompareContext`; khôi phục directive `"use client"` bị mất; card grid đơn giản hóa
+- [x] **[Data] Sửa RAM regex** trong `lib/data.ts` – regex mới xử lý đúng chuỗi phức tạp như `"12GB (256/512GB)"`
+- [x] **[About] Logo Xiaomi** – Thay `XIAOMI.png` hỏng bằng text wordmark `"mi"` (inline SVG/CSS)
+- [x] **[Footer] Xóa link ảo** `so-sanh-dien-thoai`, tổ chức lại 3 cột gọn hơn
+- [x] **[ProductDetailClient] Xóa auto-advance slideshow** – Gỡ `useEffect` timer; gallery chỉ đổi khi user bấm/kéo
+- [x] **[ProductDetailClient] Variant-aware specs** – Dòng tóm tắt thông số (`displaySpecs`) cập nhật theo phiên bản đang chọn (RAM/ROM động)
+- [x] **TypeScript** – 0 errors sau tất cả thay đổi
+
+### 5.8 Logo Hãng + Search Autocomplete + Fake Links (Session 3 – Lần 2)
+- [x] **[Public] 3 logo mới** – `apple_logo.svg`, `samsung_logo.svg`, `xiaomi_logo.svg` copy vào `public/`
+- [x] **[Navbar] Cập nhật 8 logo refs** – Thay `/APPLE.svg`, `/SAMSUNG.svg`, `/XIAOMI.png` → logo SVG chính thức trong PHONE_BRANDS, TABLET_BRANDS, HEADPHONE_BRANDS, ACCESSORY_BRANDS
+- [x] **[FeaturedProducts] Cập nhật logo** + **chuyển thành Client Component** để dùng `useCompare`
+- [x] **[FeaturedProducts] Nút ⚖️ So sánh** – Thêm compare button vào mỗi card trong section "Sản Phẩm Nổi Bật" (trang chủ)
+- [x] **[About] Logo 3 hãng** – Dùng SVG mới (`apple_logo.svg`, `samsung_logo.svg`, `xiaomi_logo.svg`), xóa workaround `null` / text "mi" cho Xiaomi
+- [x] **[Navbar] Xóa link ảo trong mega-menu "Cửa Hàng"**:
+  - ❌ Xóa: _Phụ Kiện Công Nghệ, Hàng Cũ / Like New, Chương Trình Thu Cũ, Hướng Dẫn Trả Góp, Ưu Đãi Sinh Viên_
+  - ✅ Giữ: Điện Thoại, Máy Tính Bảng, Giới Thiệu TechNext, Chính Sách Bảo Hành, Liên Hệ Tư Vấn, Flash Sale, Tin Công Nghệ
+- [x] **[Navbar] Search Autocomplete** – Gõ từ khóa → dropdown tối đa 6 gợi ý (ảnh + tên + giá), click để vào trang chi tiết; Escape xóa; click ngoài đóng; nút "Xem tất cả kết quả →"
+- [x] **[Data] Sửa giá iPhone 17e 512GB** – 17,490,000đ → 29,690,000đ (lỗi logic: bản lớn hơn phải đắt hơn)
+- [x] **TypeScript** – 0 errors sau tất cả thay đổi
+
+### 5.9 Kết Quả Kiểm Thử (Session 3)
+| Tính năng | Kết quả | Trạng thái |
+|---|---|---|
+| Search autocomplete gõ "iPhone" | Hiện 6 gợi ý có ảnh + giá | ✅ |
+| Compare ⚖️ trên FeaturedProducts (trang chủ) | Nút hiện, click ra compare bar toàn cục | ✅ |
+| Logo Apple/Samsung/Xiaomi trong Navbar mega-menu | SVG logo chính thức | ✅ |
+| Mega-menu "Cửa Hàng" | Không còn link ảo | ✅ |
+| Logo 3 hãng trang About | SVG mới hiển thị đúng | ✅ |
+| Auto-advance gallery sản phẩm | Đã tắt – gallery hoàn toàn manual | ✅ |
+| Variant-aware specs | Thay đổi đúng theo phiên bản chọn | ✅ |
+| Compare bar toàn trang | Hiện ở mọi trang qua CompareProvider | ✅ |

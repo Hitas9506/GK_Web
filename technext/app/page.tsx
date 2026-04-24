@@ -10,8 +10,6 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 const CAT_TILES = [
   { id: "dien-thoai", href: "/products?category=dien-thoai", label: "Điện Thoại",  icon: "📱", color: "#4F8EF7", bg: "#EEF4FF", count: "50+" },
   { id: "tablet",     href: "/products?category=tablet",     label: "Tablet",       icon: "📟", color: "#8B5CF6", bg: "#F3F0FF", count: "20+" },
-  { id: "tai-nghe",   href: "/products?category=tai-nghe",   label: "Tai Nghe",     icon: "🎧", color: "#22C55E", bg: "#EDFDF4", count: "30+" },
-  { id: "phu-kien",   href: "/products?category=phu-kien",   label: "Phụ Kiện",     icon: "🔌", color: "#F59E0B", bg: "#FFFBEB", count: "100+" },
 ];
 
 /* ─── Flash sale items (static data so no "products" export needed) ─ */
@@ -105,7 +103,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#1A1A1A", margin: 0, letterSpacing: "-0.02em" }}>Danh Mục Sản Phẩm</h2>
           </div>
 
-          <div className="cat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: "1rem" }}>
+          <div className="cat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "1rem", maxWidth: "600px", margin: "0 auto" }}>
             {CAT_TILES.map(cat => (
               <Link
                 key={cat.id}

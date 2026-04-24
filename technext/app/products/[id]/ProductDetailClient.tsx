@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -72,38 +73,28 @@ export default function ProductDetailClient({
   const nextImage = () =>
     switchImage((activeGalleryIdx + 1) % galleryItems.length);
 
-  /* ── Auto-advance slideshow ──────────────────────────────────
-     Images: advance after IMAGE_DURATION ms (fixed display time).
-     Videos: advance via onEnded on the <video> element.
-     Timer resets automatically when activeGalleryIdx changes
-     (user clicks thumbnail / arrow / color → new effect cycle).
-  ─────────────────────────────────────────────────────────── */
-  const IMAGE_DURATION = 4000; // 4 seconds per image
-
-  useEffect(() => {
-    const current = galleryItems[activeGalleryIdx];
-    // Videos are handled by onEnded — skip timer for them
-    if (!current || current.type === "video") return;
-
-    const timer = setTimeout(() => {
-      const nextIdx = (activeGalleryIdx + 1) % galleryItems.length;
-      setActiveGalleryIdx(nextIdx);
-      setImgErr(false);
-      // Sync color selector when advancing to an image
-      const nextItem = galleryItems[nextIdx];
-      if (nextItem?.type === "image" && product.colors.includes(nextItem.label)) {
-        setSelectedColor(nextItem.label);
-      }
-    }, IMAGE_DURATION);
-
-    return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeGalleryIdx]);
+  /* Auto-advance removed – user controls gallery manually.
+     Videos still auto-advance via onEnded on the <video> element. */
 
   // Dynamic price based on selected variant
   const displayPrice = product.variantPrices?.[selectedVariant] ?? product.price;
-
   const discount = calculateDiscount(displayPrice, product.originalPrice);
+
+  /* ── Variant-aware specs summary ──────────────────────────────
+     When a variant contains RAM/ROM info (e.g. "12GB/256GB"),
+     inject it into the specs summary so it updates dynamically.
+  ─────────────────────────────────────────────────── */
+  const variantRamRom = selectedVariant.match(/(\d+GB[/\d+GB]*|\d+GB RAM)/)?.[0];
+  // Build variant-aware specs: prepend selected variant to the spec line
+  const displaySpecs = product.specs
+    ? `${selectedVariant} | ${product.specs}`
+    : undefined;
+
+  /* Variant-aware description: append variant info if not already in description */
+  const displayDescription = product.description +
+    (selectedVariant && !product.description.includes(selectedVariant)
+      ? ` • Phiên bản đang xem: ${selectedVariant}`
+      : "");
   const related = getProductsByCategory(product.category)
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
@@ -466,10 +457,10 @@ export default function ProductDetailClient({
             {product.name}
           </h1>
 
-          {/* Specs summary */}
-          {product.specs && (
+          {/* Specs summary — updates with selected variant */}
+          {displaySpecs && (
             <p style={{ fontSize: "0.85rem", color: "var(--color-text-muted)", marginBottom: "0.75rem", lineHeight: 1.6 }}>
-              {product.specs}
+              {displaySpecs}
             </p>
           )}
 

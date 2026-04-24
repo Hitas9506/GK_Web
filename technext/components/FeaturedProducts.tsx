@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/lib/data";
 import type { Product } from "@/lib/types";
 import { getColorHex, isLightColor } from "@/lib/colorMap";
+import { useCompare } from "@/context/CompareContext";
+
 
 /* ─── Brand config ───────────────────────────────────────── */
 const BRANDS = [
@@ -10,7 +14,8 @@ const BRANDS = [
     id: "apple",
     label: "Apple",
     color: "#0071E3",
-    logo: "/APPLE.svg",
+    logo: "/apple_logo.svg",
+
     logoFilter: "brightness(0)",
     productIds: [1, 4, 3, 5],
     taglines: {
@@ -25,8 +30,9 @@ const BRANDS = [
     id: "xiaomi",
     label: "Xiaomi",
     color: "#FF6700",
-    logo: "/XIAOMI.png",
-    logoFilter: "none",
+    logo: "/xiaomi_logo.svg",
+    logoFilter: "brightness(0) invert(1)",
+
     productIds: [7, 6, 9, 8],
     taglines: {
       7: "Camera Leica đỉnh cao.\nSnapdragon 8 Elite Gen 5.",
@@ -40,7 +46,8 @@ const BRANDS = [
     id: "samsung",
     label: "Samsung",
     color: "#1428A0",
-    logo: "/SAMSUNG.svg",
+    logo: "/samsung_logo.svg",
+
     logoFilter: "brightness(0)",
     productIds: [10, 11, 13, 24],
     taglines: {
@@ -62,11 +69,18 @@ function ProductCard({
   tagline,
   badge,
   brandColor,
+  onCompareToggle,
+  comparing,
+  compareDisabled,
 }: {
   product: Product;
   tagline: string;
   badge?: string;
   brandColor: string;
+  onCompareToggle: (p: Product) => void;
+  comparing: boolean;
+  compareDisabled: boolean;
+
 }) {
   return (
     <div className="feat-card" style={{
@@ -105,6 +119,25 @@ function ProductCard({
             zIndex: 2,
           }}>{badge}</span>
         )}
+        {/* Compare button */}
+        <button
+          onClick={(e) => { e.preventDefault(); onCompareToggle(product); }}
+          title={comparing ? "Xóa khỏi so sánh" : compareDisabled ? "Đã đủ 3 SP" : "Thêm vào so sánh"}
+          style={{
+            position: "absolute", top: "10px", right: "10px",
+            width: "28px", height: "28px", borderRadius: "50%",
+            border: comparing ? `2px solid ${brandColor}` : "2px solid rgba(0,0,0,0.12)",
+            background: comparing ? brandColor : "white",
+            color: comparing ? "white" : "#555",
+            cursor: compareDisabled && !comparing ? "not-allowed" : "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "0.7rem", fontWeight: 700,
+            opacity: compareDisabled && !comparing ? 0.4 : 1,
+            transition: "all 0.15s",
+            boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+            zIndex: 3,
+          }}
+        >⚖️</button>
       </div>
 
       {/* Color swatches — dot circles */}
@@ -181,6 +214,12 @@ function ProductCard({
 
 export default function FeaturedProducts() {
   const productMap = new Map(products.map(p => [p.id, p]));
+  const { add: addToCompare, remove: removeFromCompare, has: inCompare, items: compareItems } = useCompare();
+
+  const handleCompareTgl = (p: typeof products[0]) => {
+    if (inCompare(p.id)) removeFromCompare(p.id);
+    else if (compareItems.length < 3) addToCompare(p);
+  };
 
   return (
     <section style={{ padding: "4rem 1.5rem", background: "#F5F5F7" }}>
@@ -252,6 +291,9 @@ export default function FeaturedProducts() {
                     tagline={brand.taglines[pid] ?? ""}
                     badge={brand.badges[pid]}
                     brandColor={brand.color}
+                    onCompareToggle={handleCompareTgl}
+                    comparing={inCompare(pid)}
+                    compareDisabled={compareItems.length >= 3}
                   />
                 );
               })}

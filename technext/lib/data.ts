@@ -170,7 +170,7 @@ export const products: Product[] = [
     variants: ["256GB", "512GB"],
     variantPrices: {
       "256GB": 23_690_000,
-      "512GB": 17_490_000,
+      "512GB": 29_690_000,
     },
     colors: ["Trắng", "Đen", "Hồng"],
     colorImages: {
@@ -905,6 +905,26 @@ export const products: Product[] = [
     ),
   },
 ];
+
+/* ── Auto-normalize RAM specs ────────────────────────────
+   Products using "RAM / ROM" combined label get a synthetic
+   standalone "RAM" row (first) so the compare page and specs
+   tab show RAM for ALL devices (Apple already has "RAM").
+────────────────────────────────────────────────────────── */
+products.forEach(p => {
+  if (!p.detailedSpecs) return;
+  const hasRAM    = p.detailedSpecs.some(s => s.label === "RAM");
+  const ramRomRow = p.detailedSpecs.find(s => s.label === "RAM / ROM");
+  if (!hasRAM && ramRomRow) {
+    // Extract RAM: match "16GB LPDDR5X" or "12GB" at start, before any " /"
+    const match = ramRomRow.value.match(/^(\d+GB(?:\s+\w+)*?)(?:\s*(?:\/|LPDDR\w*\s*\/|UFS))/);
+    const ramPart = match ? match[1].trim() :
+      // Fallback: just grab everything before the first " /" separator
+      ramRomRow.value.replace(/\s*\/.*/, "").trim();
+    p.detailedSpecs.unshift({ label: "RAM", value: ramPart });
+  }
+});
+
 
 /* ── Danh mục ───────────────────────────────────────────── */
 export const categories: Category[] = [

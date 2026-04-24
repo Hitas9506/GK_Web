@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { useCompare } from "@/context/CompareContext";
 import type { Product } from "@/lib/types";
 import { formatPrice, calculateDiscount } from "@/lib/utils";
 import { getColorHex, isLightColor } from "@/lib/colorMap";
@@ -24,9 +25,11 @@ const CATEGORY_EMOJI: Record<string, string> = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const { add: addToCompare, remove: removeFromCompare, has: inCompare, items: compareItems } = useCompare();
   const [imgErr, setImgErr] = useState(false);
   const discount = calculateDiscount(product.price, product.originalPrice);
   const emoji = CATEGORY_EMOJI[product.category] ?? "📱";
+  const comparing = inCompare(product.id);
 
   return (
     <div
@@ -39,6 +42,29 @@ export default function ProductCard({ product }: { product: Product }) {
         position: "relative",
       }}
     >
+      {/* Compare button */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          if (comparing) removeFromCompare(product.id);
+          else if (compareItems.length < 3) addToCompare(product);
+        }}
+        title={comparing ? "Xóa khỏi so sánh" : compareItems.length >= 3 ? "Đã đủ 3 sản phẩm" : "Thêm vào so sánh"}
+        style={{
+          position: "absolute", top: "0.75rem", right: "0.75rem", zIndex: 2,
+          width: "28px", height: "28px", borderRadius: "50%",
+          border: comparing ? "2px solid #FF6700" : "2px solid rgba(0,0,0,0.12)",
+          background: comparing ? "#FF6700" : "white",
+          color: comparing ? "white" : "#555",
+          cursor: compareItems.length >= 3 && !comparing ? "not-allowed" : "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "0.7rem", fontWeight: 700,
+          opacity: compareItems.length >= 3 && !comparing ? 0.4 : 1,
+          transition: "all 0.15s",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
+        }}
+      >⚖️</button>
+
       {/* Badge */}
       {product.badge && (
         <span
