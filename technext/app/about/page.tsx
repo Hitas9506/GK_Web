@@ -37,10 +37,9 @@ const TEAM = [
 ];
 
 const BRANDS = [
-  { name: "Apple",   logo: "/APPLE.svg",   bg: "#1A1A1A", filter: "brightness(0) invert(1)" },
-  { name: "Samsung", logo: "/SAMSUNG.svg", bg: "#1428A0", filter: "brightness(0) invert(1)" },
-  { name: "Xiaomi",  logo: "/XIAOMI.png",  bg: "white", filter: "none" },
-
+  { name: "Apple",   logo: "/apple_logo.svg",   bg: "#1A1A1A", filter: "brightness(0) invert(1)" },
+  { name: "Samsung", logo: "/samsung_logo.svg", bg: "#1428A0", filter: "brightness(0) invert(1)" },
+  { name: "Xiaomi",  logo: "/xiaomi_logo.svg",  bg: "white",   filter: "none" },
 ];
 
 
